@@ -1,402 +1,222 @@
 openapi: 3.0.3
 info:
-  title: dgoval API
-  version: 1.0.0
-  description: |
-    Consolidated OpenAPI specification for DGOVAL endpoints.
-    This merges the provided docs and adds enumerations and standardized error responses.
+  title: dgoval
+  version: "1.0.0"
+  description: "OpenAPI converted from the provided Postman collection."
 servers:
-  - url: http://{dgoval_base_url}
+  - url: http://{DGOVAL_BASE_URL}
     variables:
-      dgoval_base_url:
+      DGOVAL_BASE_URL:
         default: localhost:3000
-        description: Base URL for DGOVAL API
 tags:
   - name: Auth
   - name: Payment
   - name: Companies
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-  schemas:
-    ApiResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: ""
-        data:
-          nullable: true
-    ErrorResponse:
-      type: object
-      required: [success, code, message]
-      properties:
-        success:
-          type: boolean
-          example: false
-        code:
-          type: string
-          description: Machine-readable error code
-          example: VALIDATION_ERROR
-        message:
-          type: string
-          description: Human-readable error description
-          example: Invalid payment status or provider
-        details:
-          type: object
-          additionalProperties: true
-          description: Optional extra info (e.g., field errors)
-    ValidationErrorDetails:
-      type: object
-      additionalProperties:
-        type: array
-        items:
-          type: string
-      example:
-        paymentStatus: ["must be one of: succeeded, failed, cancelled"]
-        provider: ["must be one of: Paystack, Flutterwave"]
-    SignupRequest:
-      type: object
-      required: [email, password, firstName, lastName, hasAcceptedTerms]
-      properties:
-        email:
-          type: string
-          format: email
-          example: user@example.com
-        password:
-          type: string
-          example: securePassword123
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: Doe
-        hasAcceptedTerms:
-          type: boolean
-          example: true
-    SigninRequest:
-      type: object
-      required: [email, password]
-      properties:
-        email:
-          type: string
-          format: email
-          example: caracolasstore@gmail.com
-        password:
-          type: string
-          example: John@weq112
-    ForgotPasswordRequest:
-      type: object
-      required: [email]
-      properties:
-        email:
-          type: string
-          format: email
-          example: caracolasstore@gmail.com
-    ResetPasswordRequest:
-      type: object
-      required: [email, newPassword]
-      properties:
-        email:
-          type: string
-          format: email
-          example: caracolasstore@gmail.com
-        newPassword:
-          type: string
-          example: Password@weq112
-    VerifyResetPasswordRequest:
-      type: object
-      required: [otp, email]
-      properties:
-        otp:
-          type: string
-          example: "301806"
-        email:
-          type: string
-          format: email
-          example: caracolasstore@gmail.com
-    VerifyOtpRequest:
-      type: object
-      required: [email, otp]
-      properties:
-        email:
-          type: string
-          format: email
-          example: caracolasstore@gmail.com
-        otp:
-          type: string
-          example: "643577"
-    Provider:
-      type: string
-      enum: [Paystack, Flutterwave]
-      example: Paystack
-    PaymentStatus:
-      type: string
-      enum: [succeeded, failed, cancelled]
-      example: succeeded
-    SelectPaymentPlanRequest:
-      type: object
-      required: [planId, companyId, userId, provider]
-      properties:
-        planId:
-          type: string
-          example: 01K97M4YDKY42QY9KYSJ8P183N
-        companyId:
-          type: string
-          example: 01K9AFG1WHKVASTFNDVV8FVG3C
-        userId:
-          type: string
-          example: 01K9AF8KBCWQB424ARNM0KQZD7
-        provider:
-          $ref: "#/components/schemas/Provider"
-    ConfirmPaymentRequest:
-      type: object
-      required: [paymentStatus, provider, providerTxId, paymentId]
-      properties:
-        paymentStatus:
-          $ref: "#/components/schemas/PaymentStatus"
-        provider:
-          $ref: "#/components/schemas/Provider"
-        providerTxId:
-          type: string
-          description: Provider transaction reference/ID
-          example: "6767998765444789765433"
-        paymentId:
-          type: string
-          description: Internal payment record ID
-          example: 01K9AFZ3YKWANH0H9C4JKJKS5B
-    CreateCompanyRequest:
-      type: object
-      required: [logoUrl, name, category, industry, address, userId]
-      properties:
-        logoUrl:
-          type: string
-          format: uri
-          example: https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e-9d20-01e4dc10fecb.jpg
-        name:
-          type: string
-          example: Guarantee Trust bank
-        category:
-          type: string
-          example: Public
-        industry:
-          type: string
-          example: Banking
-        address:
-          type: string
-          example: Festac
-        userId:
-          type: string
-          example: 01K9AF8KBCWQB424ARNM0KQZD7
-  responses:
-    Ok:
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ApiResponse"
-    Created:
-      description: Created
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ApiResponse"
-    BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorResponse"
-              - type: object
-                properties:
-                  code:
-                    example: VALIDATION_ERROR
-                  details:
-                    $ref: "#/components/schemas/ValidationErrorDetails"
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-    Conflict:
-      description: Conflict
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-    TooManyRequests:
-      description: Too Many Requests
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
-    ServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorResponse"
+
 paths:
   /auth/signup:
     post:
       tags: [Auth]
-      summary: Sign up
+      summary: auth sign up
       description: Register a new user.
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/SignupRequest"
+            example:
+              email: caracolasstore@gmail.com
+              password: John@weq112
+              firstName: Caracolas
+              lastName: store
       responses:
         "201":
-          $ref: "#/components/responses/Created"
+          description: Created
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "409":
-          $ref: "#/components/responses/Conflict"
+          description: Conflict
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/signin:
     post:
       tags: [Auth]
-      summary: Sign in
+      summary: signin
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/SigninRequest"
+            example:
+              email: caracolasstore@gmail.com
+              password: John@weq112
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
+        "400":
+          description: Bad Request
         "401":
-          $ref: "#/components/responses/Unauthorized"
+          description: Unauthorized
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/signout:
     post:
       tags: [Auth]
-      summary: Sign out
+      summary: signout
+      requestBody:
+        required: false
+        content:
+          application/json:
+            example:
+              email: chidibede@gmail.com
+              password: Password@weq112
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "401":
-          $ref: "#/components/responses/Unauthorized"
+          description: Unauthorized
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/forgot-password:
     post:
       tags: [Auth]
-      summary: Forgot password
+      summary: forgot-password
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/ForgotPasswordRequest"
+            example:
+              email: caracolasstore@gmail.com
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "404":
-          $ref: "#/components/responses/NotFound"
+          description: Not Found
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/reset-password:
     post:
       tags: [Auth]
-      summary: Reset password
+      summary: reset-password
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/ResetPasswordRequest"
+            example:
+              email: caracolasstore@gmail.com
+              newPassword: Password@weq112
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "401":
-          $ref: "#/components/responses/Unauthorized"
+          description: Unauthorized
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/verify-reset-password:
     post:
       tags: [Auth]
-      summary: Verify reset password OTP
+      summary: verify-reset-password
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/VerifyResetPasswordRequest"
+            example:
+              otp: "301806"
+              email: caracolasstore@gmail.com
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "404":
-          $ref: "#/components/responses/NotFound"
+          description: Not Found
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /auth/verify-otp:
     post:
       tags: [Auth]
-      summary: Verify email OTP
+      summary: verify otp
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/VerifyOtpRequest"
+            example:
+              email: caracolasstore@gmail.com
+              otp: "643577"
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "404":
-          $ref: "#/components/responses/NotFound"
+          description: Not Found
         "500":
-          $ref: "#/components/responses/ServerError"
-  /auth/refresh-token:
+          description: Internal Server Error
+
+  /api/payment/plans/select:
     post:
-      tags: [Auth]
-      summary: Refresh access token
-      description: Refreshes the access token using the refresh token (e.g. via HTTP-only cookie).
-      parameters:
-        - name: Cookie
-          in: header
-          description: Should contain `refreshToken=<JWT>` if using cookies
-          required: false
-          schema:
-            type: string
+      tags: [Payment]
+      summary: select payment plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              planId: 01K97M4YDKY42QY9KYSJ8P183N
+              companyId: 01K9AFG1WHKVASTFNDVV8FVG3C
+              userId: 01K9AF8KBCWQB424ARNM0KQZD7
+              provider: Paystack
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "409":
+          description: Conflict
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
+  /api/payment/confirm:
+    post:
+      tags: [Payment]
+      summary: confirm payment on success
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              paymentStatus: succeeded
+              providerTxId: "6767998765444789765433"
+              paymentId: 01K9AFZ3YKWANH0H9C4JKJKS5B
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "409":
+          description: Conflict
+        "500":
+          description: Internal Server Error
+
   /api/payment/plans:
     get:
       tags: [Payment]
@@ -404,82 +224,13 @@ paths:
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          example: 01K97M4YDKY42QY9KYSJ8P183N
-                        plan_name:
-                          type: string
-                          example: month
-                        amount:
-                          type: integer
-                          example: 100000
-                        currency:
-                          type: string
-                          example: naira
-                        interval:
-                          type: string
-                          example: monthly
         "500":
-          $ref: "#/components/responses/ServerError"
-  /api/payment/plans/select:
-    post:
-      tags: [Payment]
-      summary: Select payment plan
-      description: Start a payment flow for a selected plan and provider.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SelectPaymentPlanRequest"
-      responses:
-        "200":
-          $ref: "#/components/responses/Ok"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "409":
-          $ref: "#/components/responses/Conflict"
-        "500":
-          $ref: "#/components/responses/ServerError"
-  /api/payment/confirm:
-    post:
-      tags: [Payment]
-      summary: Confirm a payment transaction
-      description: Confirm the final outcome of a payment attempt.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ConfirmPaymentRequest"
-      responses:
-        "200":
-          $ref: "#/components/responses/Ok"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "409":
-          $ref: "#/components/responses/Conflict"
-        "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /api/companies/logo/upload:
     post:
       tags: [Companies]
-      summary: Upload company logo
+      summary: upload logo
       requestBody:
         required: true
         content:
@@ -491,81 +242,82 @@ paths:
                 logo:
                   type: string
                   format: binary
+            encoding:
+              logo:
+                contentType: image/*,application/octet-stream
       responses:
         "200":
-          $ref: "#/components/responses/Ok"
+          description: OK
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "413":
           description: Payload Too Large
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
   /api/companies:
     post:
       tags: [Companies]
-      summary: Create company
+      summary: create company
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/CreateCompanyRequest"
+            example:
+              logoUrl: https://res.cloudinary.com/marshalcloudinary/image/upload/v1762382502/GTBank_logo.svg_gtgbme.png
+              name: Guarantee Trust bank
+              category: Public
+              industry: Banking
+              address: Festac
+              userId: 01K9AF8KBCWQB424ARNM0KQZD7
       responses:
         "201":
-          $ref: "#/components/responses/Created"
+          description: Created
         "400":
-          $ref: "#/components/responses/BadRequest"
+          description: Bad Request
         "409":
-          $ref: "#/components/responses/Conflict"
+          description: Conflict
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
     get:
       tags: [Companies]
-      summary: List companies for current user
+      summary: list companies for user
       security:
         - bearerAuth: []
       responses:
         "200":
           description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          example: 01K9AFG1WHKVASTFNDVV8FVG3C
-                        name:
-                          type: string
-                          example: Guarantee Trust bank
-                        category:
-                          type: string
-                          example: Public
-                        industry:
-                          type: string
-                          example: Banking
-                        address:
-                          type: string
-                          example: Festac
-                        logoUrl:
-                          type: string
-                          format: uri
-                        createdAt:
-                          type: string
-                          format: date-time
         "401":
-          $ref: "#/components/responses/Unauthorized"
+          description: Unauthorized
         "500":
-          $ref: "#/components/responses/ServerError"
+          description: Internal Server Error
+
+  /auth/refresh-token:
+    post:
+      tags: [Auth]
+      summary: refresh token
+      parameters:
+        - in: header
+          name: Cookie
+          required: false
+          schema:
+            type: string
+          example: >-
+            refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMUs5QUY4S0JDV1FCNDI0QVJOTTBLUVpENyIsImVtYWlsIjoiY2FyYWNvbGFzc3RvcmVAZ21haWwuY29tIiwiZmlyc3ROYW1lIjoiQ2FyYWNvbGFzIiwibGFzdE5hbWUiOiJzdG9yZSIsInJvbGUiOiJhZG1pbiIsImN1cnJlbnRPbmJvYXJkaW5nU2Vzc2lvbiI6ImNvbXBsZXRlZCIsImNvbXBhbnlJZCI6IjAxSzlBRkcxV0hLVkFTVEZORFZWOEZWRzNDIiwicGxhbklkIjoiMDFLOTdNNFlES1k0MlFZOUtZU0o4UDE4M04iLCJ0b2tlblR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNzYyMzYzNzMxLCJleHAiOjE3NjI5Njg1MzF9.4NUtr11HQkVunZ3f_xGO44UHcWGf1sps00fgGGyoVvw
+      requestBody:
+        required: false
+        content:
+          application/json:
+            example: {}
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
