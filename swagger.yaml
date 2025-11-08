@@ -167,6 +167,25 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
+  /auth/resend-otp:
+    post:
+      tags: [Auth]
+      summary: Resend otp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: caracolasstore@gmail.com
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
 
   /api/payment/plans/select:
     post:
