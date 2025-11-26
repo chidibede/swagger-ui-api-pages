@@ -82,12 +82,12 @@ components:
       type: object
       required:
         - paymentStatus
-        - providerTxId
+        - providerTxReference
         - paymentId
       properties:
         paymentStatus:
           type: string
-        providerTxId:
+        providerTxReference:
           type: string
         paymentId:
           type: string
@@ -430,7 +430,7 @@ paths:
               $ref: '#/components/schemas/PaymentConfirmRequest'
             example:
               paymentStatus: succeeded
-              providerTxId: "6767998765444789765433"
+              providerTxReference: "6767998765444789765433"
               paymentId: 01K9DHPK9BDNGT0PTJ1Q1206CT
       responses:
         '200':
