@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: DGOVAL API (from Postman export)
-  description: OpenAPI spec generated from Postman collection "dgoval export" and extended with team invite endpoints and CSV parsing/bulk invite endpoints.
-  version: "1.0.2"
+  description: OpenAPI spec generated from Postman collection "dgoval export" and extended with team invite endpoints, CSV parsing/bulk invite endpoints, and company branding.
+  version: "1.0.3"
 servers:
   - url: "{{DGOVAL_BASE_URL}}"
     description: Base URL from Postman environment variable
@@ -165,6 +165,97 @@ components:
           type: string
         userId:
           type: string
+    # Branding schemas
+    PaletteTint:
+      type: object
+      properties:
+        "50":
+          type: string
+        "100":
+          type: string
+        "200":
+          type: string
+        "300":
+          type: string
+        "400":
+          type: string
+        "500":
+          type: string
+        "600":
+          type: string
+        "700":
+          type: string
+        "800":
+          type: string
+        "900":
+          type: string
+      example:
+        "50": "#F0F9FF"
+        "100": "#E0F2FE"
+        "200": "#BAE6FD"
+        "500": "#0A84FF"
+        "900": "#00285A"
+    PaletteTokens:
+      type: object
+      properties:
+        primary:
+          $ref: '#/components/schemas/PaletteTint'
+        secondary:
+          $ref: '#/components/schemas/PaletteTint'
+      example:
+        primary:
+          "50": "#F0F9FF"
+          "500": "#0A84FF"
+          "900": "#00285A"
+        secondary:
+          "50": "#F9FAFB"
+          "500": "#111827"
+          "900": "#030712"
+    CompanyBranding:
+      type: object
+      properties:
+        companyId:
+          type: string
+        brandName:
+          type: string
+        tagline:
+          type: string
+        logoUrl:
+          type: string
+          format: uri
+        faviconUrl:
+          type: string
+          format: uri
+        primaryHex:
+          type: string
+          description: Primary brand color hex (e.g. #0A84FF)
+        secondaryHex:
+          type: string
+        paletteTokens:
+          $ref: '#/components/schemas/PaletteTokens'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        companyId: 01K9DA5HM0406JZ1PP322VA1M8
+        brandName: DGOVAL
+        tagline: "Assess with confidence"
+        logoUrl: "https://res.cloudinary.com/.../logo.png"
+        faviconUrl: "https://res.cloudinary.com/.../favicon.ico"
+        primaryHex: "#0A84FF"
+        secondaryHex: "#111827"
+        paletteTokens:
+          primary:
+            "50": "#F0F9FF"
+            "500": "#0A84FF"
+            "900": "#00285A"
+          secondary:
+            "50": "#F9FAFB"
+            "500": "#111827"
+            "900": "#030712"
     TeamInviteCreateRequest:
       type: object
       required:
@@ -285,11 +376,12 @@ components:
         loginUrl:
           type: string
       example:
-        - email: caracolasstore+1@gmail.com
-          firstName: Cara
-          lastName: Colas
-          role: evaluation_manager
-          loginUrl: https://app.dgoval.com/login
+        email: caracolasstore+1@gmail.com
+        firstName: Cara
+        lastName: Colas
+        role: evaluation_manager
+        loginUrl: https://app.dgoval.com/login
+
 paths:
   /auth/signup:
     post:
@@ -770,6 +862,134 @@ paths:
       responses:
         '201':
           description: Created
+
+  # Branding endpoints
+  /api/companies/{companyId}/branding:
+    get:
+      summary: Get company branding
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Company branding object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyBranding'
+        '404':
+          description: Company branding not found
+
+    put:
+      summary: Update company branding
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update branding fields (partial or full)
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyBranding'
+            example:
+              brandName: "DGOVAL"
+              tagline: "Assess with confidence"
+              primaryHex: "#0A84FF"
+              secondaryHex: "#111827"
+              paletteTokens:
+                primary:
+                  "50": "#F0F9FF"
+                  "500": "#0A84FF"
+                  "900": "#00285A"
+      responses:
+        '200':
+          description: Updated branding returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyBranding'
+
+  /api/companies/{companyId}/branding/logo:
+    post:
+      summary: Upload company logo (multipart form)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Uploaded — returns `logoUrl`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logoUrl:
+                    type: string
+                    format: uri
+              example:
+                logoUrl: "https://res.cloudinary.com/.../logo.png"
+
+  /api/companies/{companyId}/branding/favicon:
+    post:
+      summary: Upload company favicon (multipart form)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                favicon:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Uploaded — returns `faviconUrl`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  faviconUrl:
+                    type: string
+                    format: uri
+              example:
+                faviconUrl: "https://res.cloudinary.com/.../favicon.ico"
+
   /api/orgs/{companyId}/invites:
     post:
       summary: Create a single team invite
@@ -1123,5 +1343,6 @@ paths:
                   $ref: '#/components/schemas/TeamMember'
         '401':
           description: Unauthorized
+
 security:
   - {}
