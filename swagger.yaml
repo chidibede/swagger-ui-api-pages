@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: DGOVAL API (from Postman export)
-  description: OpenAPI spec generated from Postman collection "dgoval export" and extended with team invite endpoints.
-  version: "1.0.1"
+  description: OpenAPI spec generated from Postman collection "dgoval export" and extended with team invite endpoints and CSV parsing/bulk invite endpoints.
+  version: "1.0.2"
 servers:
   - url: "{{DGOVAL_BASE_URL}}"
     description: Base URL from Postman environment variable
@@ -238,6 +238,58 @@ components:
         status:
           type: string
           description: e.g. active, deactivated, pending_invite
+    BulkInviteMember:
+      type: object
+      description: Single member for bulk invites (JSON array)
+      required:
+        - email
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+    BulkInviteRequest:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkInviteMember'
+      example:
+        members:
+          - first_name: Ada
+            last_name: Lovelace
+            email: ada@example.com
+            role: admin
+          - first_name: Alan
+            last_name: Turing
+            email: alan@example.com
+            role: evaluator
+    ParsedCsvRow:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        loginUrl:
+          type: string
+      example:
+        - email: caracolasstore+1@gmail.com
+          firstName: Cara
+          lastName: Colas
+          role: evaluation_manager
+          loginUrl: https://app.dgoval.com/login
 paths:
   /auth/signup:
     post:
@@ -853,22 +905,97 @@ paths:
                 format: binary
         '401':
           description: Unauthorized
-  /api/orgs/{companyId}/invites/csv:
+  /api/orgs/{companyId}/invites/csv/parse:
     post:
-      summary: Bulk send invites from CSV
+      summary: Parse uploaded CSV of team invites (returns parsed rows + validation)
       tags:
         - Team
       security:
         - bearerAuth: []
       parameters:
-        - in: path
-          name: companyId
+        - name: companyId
+          in: path
           required: true
           schema:
             type: string
+          description: Organisation / company ID
       requestBody:
         required: true
         content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CSV file to parse. Expected header: email,firstName,lastName,role,loginUrl
+            encoding:
+              file:
+                contentType: text/csv
+      responses:
+        '200':
+          description: Parsed CSV rows and validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parsed:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ParsedCsvRow'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        row:
+                          type: integer
+                        message:
+                          type: string
+              example:
+                parsed:
+                  - email: caracolasstore+1@gmail.com
+                    firstName: Cara
+                    lastName: Colas
+                    role: evaluation_manager
+                    loginUrl: https://app.dgoval.com/login
+                errors: []
+        '400':
+          description: Invalid CSV or request
+        '401':
+          description: Unauthorized
+  /api/orgs/{companyId}/invites/csv:
+    post:
+      summary: Bulk send invites — accept JSON array of members OR a CSV body
+      tags:
+        - Team
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Organisation / company ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkInviteRequest'
+            example:
+              members:
+                - first_name: Ada
+                  last_name: Lovelace
+                  email: ada@example.com
+                  role: admin
+                - first_name: Alan
+                  last_name: Turing
+                  email: alan@example.com
+                  role: evaluator
           text/csv:
             schema:
               type: string
@@ -879,8 +1006,85 @@ paths:
       responses:
         '200':
           description: Bulk invites processed (some may fail)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  processed:
+                    type: integer
+                  succeeded:
+                    type: integer
+                  failed:
+                    type: integer
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                        status:
+                          type: string
+                        message:
+                          type: string
+              example:
+                processed: 2
+                succeeded: 2
+                failed: 0
+                details:
+                  - email: ada@example.com
+                    status: success
+                    message: ""
+                  - email: alan@example.com
+                    status: success
+                    message: ""
         '400':
           description: Invalid CSV or request
+        '401':
+          description: Unauthorized
+  /api/orgs/{companyId}/members:
+    put:
+      summary: Update a team member (e.g. change role)
+      tags:
+        - Team
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: companyId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                role:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+            example:
+              userId: 01KAGE0HRSYEGJR05CFEAFGPWA
+              email: caracolasstore+8@gmail.com
+              role: viewer
+              firstName: Bree
+              lastName: Colas
+      responses:
+        '200':
+          description: Member updated
+        '400':
+          description: Validation error
         '401':
           description: Unauthorized
   /api/orgs/{companyId}/team:
@@ -894,6 +1098,18 @@ paths:
         - in: path
           name: companyId
           required: true
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: sortBy
           schema:
             type: string
       responses:
