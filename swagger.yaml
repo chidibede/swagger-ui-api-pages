@@ -1149,7 +1149,6 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: CSV file to parse. Expected header: email,firstName,lastName,role,loginUrl
             encoding:
               file:
                 contentType: text/csv
