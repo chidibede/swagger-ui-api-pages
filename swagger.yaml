@@ -1003,48 +1003,6 @@ paths:
                   brandName: DGOVAL
                   primaryHex: "#0A84FF"
 
-    put:
-      summary: "Update company details (Postman collection: update company details)"
-      description: "Update basic details for the company (partial updates allowed)."
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CompanyCreateRequest"
-            example:
-              name: "GTTT Bank"
-              address: "Gbagada"
-      responses:
-        "200":
-          description: Company details updated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  companyId:
-                    type: string
-                  name:
-                    type: string
-                  address:
-                    type: string
-                  logoUrl:
-                    type: string
-                    format: uri
-              example:
-                companyId: 01K9DHNRHY9CBXGTASXZH8B3AV
-                name: "GTTT Bank"
-                address: "Gbagada"
-                logoUrl: "https://res.cloudinary.com/.../logo.png"
   /api/orgs/{companyId}/invites/resend:
     post:
       summary: Resend an existing invite email
