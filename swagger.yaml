@@ -1,640 +1,347 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: DGOVAL API (from Postman export)
-  description: OpenAPI spec generated from Postman collection "dgoval export" and extended with team invite endpoints, CSV parsing/bulk invite endpoints, and company branding.
-  version: "1.0.3"
+  title: dgoval export
+  version: 1.0.0
+  description: ''
 servers:
-  - url: "{{DGOVAL_BASE_URL}}"
-    description: Base URL from Postman environment variable
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  schemas:
-    SignupRequest:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        hasAcceptedTerms:
-          type: boolean
-    SigninRequest:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-    ForgotPasswordRequest:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          type: string
-          format: email
-    ResetPasswordRequest:
-      type: object
-      required:
-        - email
-        - newPassword
-      properties:
-        email:
-          type: string
-          format: email
-        newPassword:
-          type: string
-    VerifyOtpRequest:
-      type: object
-      required:
-        - email
-        - otp
-      properties:
-        email:
-          type: string
-          format: email
-        otp:
-          type: string
-    RefreshTokenResponse:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        expiresIn:
-          type: integer
-    PaymentConfirmRequest:
-      type: object
-      required:
-        - paymentStatus
-        - providerTxReference
-        - paymentId
-      properties:
-        paymentStatus:
-          type: string
-        providerTxReference:
-          type: string
-        paymentId:
-          type: string
-    SelectPlanRequest:
-      type: object
-      required:
-        - planId
-        - companyId
-        - userId
-        - provider
-      properties:
-        planId:
-          type: string
-        companyId:
-          type: string
-        userId:
-          type: string
-        provider:
-          type: string
-    SurveyTemplateMetadata:
-      type: object
-      properties:
-        companyId:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-    SurveyQuestions:
-      type: object
-      properties:
-        companyId:
-          type: string
-        questions:
-          type: array
-          items:
-            type: object
-            properties:
-              position:
-                type: integer
-              text:
-                type: string
-              type:
-                type: string
-              required:
-                type: boolean
-              skippable:
-                type: boolean
-              helpText:
-                type: string
-              likert:
-                type: object
-                properties:
-                  scaleMinLabel:
-                    type: string
-                  scaleMaxLabel:
-                    type: string
-                  scalePoints:
-                    type: integer
-    CompanyCreateRequest:
-      type: object
-      required:
-        - name
-      properties:
-        logoUrl:
-          type: string
-          format: uri
-        name:
-          type: string
-        category:
-          type: string
-        industry:
-          type: string
-        address:
-          type: string
-        userId:
-          type: string
-    # Branding schemas
-    PaletteTint:
-      type: object
-      properties:
-        "50":
-          type: string
-        "100":
-          type: string
-        "200":
-          type: string
-        "300":
-          type: string
-        "400":
-          type: string
-        "500":
-          type: string
-        "600":
-          type: string
-        "700":
-          type: string
-        "800":
-          type: string
-        "900":
-          type: string
-      example:
-        "50": "#F0F9FF"
-        "100": "#E0F2FE"
-        "200": "#BAE6FD"
-        "500": "#0A84FF"
-        "900": "#00285A"
-    PaletteTokens:
-      type: object
-      properties:
-        primary:
-          $ref: "#/components/schemas/PaletteTint"
-        secondary:
-          $ref: "#/components/schemas/PaletteTint"
-      example:
-        primary:
-          "50": "#F0F9FF"
-          "500": "#0A84FF"
-          "900": "#00285A"
-        secondary:
-          "50": "#F9FAFB"
-          "500": "#111827"
-          "900": "#030712"
-    CompanyBranding:
-      type: object
-      properties:
-        companyId:
-          type: string
-        brandName:
-          type: string
-        tagline:
-          type: string
-        logoUrl:
-          type: string
-          format: uri
-        primaryHex:
-          type: string
-          description: Primary brand color hex (e.g. #0A84FF)
-        secondaryHex:
-          type: string
-        paletteTokens:
-          $ref: "#/components/schemas/PaletteTokens"
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      example:
-        companyId: 01K9DA5HM0406JZ1PP322VA1M8
-        brandName: DGOVAL
-        tagline: "Assess with confidence"
-        logoUrl: "https://res.cloudinary.com/.../logo.png"
-        primaryHex: "#0A84FF"
-        secondaryHex: "#111827"
-        paletteTokens:
-          primary:
-            "50": "#F0F9FF"
-            "500": "#0A84FF"
-            "900": "#00285A"
-          secondary:
-            "50": "#F9FAFB"
-            "500": "#111827"
-            "900": "#030712"
-    TeamInviteCreateRequest:
-      type: object
-      required:
-        - email
-        - role
-        - firstName
-        - lastName
-        - loginUrl
-      properties:
-        email:
-          type: string
-          format: email
-        role:
-          type: string
-          description: >
-            Role to assign to the invited user (e.g. evaluator, evaluation_manager, admin).
-        firstName:
-          type: string
-        lastName:
-          type: string
-        loginUrl:
-          type: string
-          format: uri
-    TeamInviteResendRequest:
-      type: object
-      required:
-        - userId
-        - loginUrl
-      properties:
-        userId:
-          type: string
-        loginUrl:
-          type: string
-          format: uri
-    TeamMemberStatusRequest:
-      type: object
-      required:
-        - userId
-      properties:
-        userId:
-          type: string
-    FirstLoginSetPasswordRequest:
-      type: object
-      required:
-        - email
-        - currentPassword
-        - newPassword
-      properties:
-        email:
-          type: string
-          format: email
-        currentPassword:
-          type: string
-        newPassword:
-          type: string
-    TeamMember:
-      type: object
-      description: A member of the organisation team
-      properties:
-        userId:
-          type: string
-        email:
-          type: string
-          format: email
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-        status:
-          type: string
-          description: e.g. active, deactivated, pending_invite
-    BulkInviteMember:
-      type: object
-      description: Single member for bulk invites (JSON array)
-      required:
-        - email
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-          format: email
-        role:
-          type: string
-    BulkInviteRequest:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            $ref: "#/components/schemas/BulkInviteMember"
-      example:
-        members:
-          - first_name: Ada
-            last_name: Lovelace
-            email: ada@example.com
-            role: admin
-          - first_name: Alan
-            last_name: Turing
-            email: alan@example.com
-            role: evaluator
-    ParsedCsvRow:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        firstName:
-          type: string
-        lastName:
-          type: string
-        role:
-          type: string
-        loginUrl:
-          type: string
-      example:
-        email: caracolasstore+1@gmail.com
-        firstName: Cara
-        lastName: Colas
-        role: evaluation_manager
-        loginUrl: https://app.dgoval.com/login
-
+  - url: '{{DGOVAL_BASE_URL}}'
 paths:
   /auth/signup:
     post:
-      summary: Sign up (register a new user)
+      summary: auth sign up
+      tags:
+        - auth
+      responses: {}
+      description: >-
+        ## Sign Up Endpoint
+
+
+        **Endpoint:**
+        `https://rcyjzmhu57.execute-api.eu-west-1.amazonaws.com/auth/signup`  
+
+        **Method:** `POST`
+
+
+        This endpoint is used to register a new user in the system. The request
+        requires the user to provide their email, password, first name, last
+        name, and confirmation that they have accepted the terms of service.
+
+
+        ### Request Body Parameters
+
+
+        - **email** (string): The email address of the user.
+            
+        - **password** (string): The password chosen by the user.
+            
+        - **firstName** (string): The first name of the user.
+            
+        - **lastName** (string): The last name of the user.
+            
+        - **hasAcceptedTerms** (boolean): Indicates whether the user has
+        accepted the terms of service.
+            
+
+        ### Response
+
+
+        On a successful registration, the server responds with a status code of
+        `201` and a JSON object indicating the success of the operation.
+
+
+        - **success** (boolean): Indicates whether the signup was successful.
+            
+        - **message** (string): A message providing additional context (may be
+        empty).
+            
+
+        Ensure that all required fields are provided in the request to
+        successfully create a new user account.
+
+
+        This endpoint allows users to create a new account by providing their
+        personal details. It is designed to facilitate user registration in the
+        system.
+
+
+        ### Request
+
+
+        - **Method**: POST
+            
+        - **URL**:
+        `https://rcyjzmhu57.execute-api.eu-west-1.amazonaws.com/auth/signup`
+            
+
+        #### Request Body
+
+
+        The request body must be a JSON object containing the following
+        parameters:
+
+
+        - `email` (string): The user's email address. This will be used for
+        account verification and login.
+            
+        - `password` (string): The user's chosen password. It should meet the
+        security requirements set by the application.
+            
+        - `firstName` (string): The user's first name.
+            
+        - `lastName` (string): The user's last name.
+            
+        - `hasAcceptedTerms` (boolean): A flag indicating whether the user has
+        accepted the terms and conditions of the service.
+            
+
+        **Example Request Body**:
+
+
+        ``` json
+
+        {
+          "email": "user@example.com",
+          "password": "securePassword123",
+          "firstName": "John",
+          "lastName": "Doe",
+          "hasAcceptedTerms": true
+        }
+
+         ```
+
+        ### Response
+
+
+        On successful account creation, the API will return a response with the
+        following structure:
+
+
+        - **Status Code**: 201 (Created)
+            
+        - **Content-Type**: text/plain
+            
+        - **Response Body**:
+            
+            - `success` (boolean): Indicates whether the signup was successful.
+                
+            - `message` (string): A message providing additional information about the signup process (may be empty).
+                
+
+        **Example Response**:
+
+
+        ``` json
+
+        {
+          "success": true,
+          "message": ""
+        }
+
+         ```
+
+        ### Summary
+
+
+        This endpoint is essential for onboarding new users by collecting their
+        necessary information and confirming their acceptance of terms. A
+        successful response indicates that the user has been registered and can
+        proceed to log in.
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SignupRequest"
-            example:
-              email: user@example.com
-              password: securePassword123
-              firstName: John
-              lastName: Doe
-              hasAcceptedTerms: true
-      responses:
-        "201":
-          description: Created - signup successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-  /auth/signin:
-    post:
-      summary: Sign in
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SigninRequest"
-            example:
-              email: caracolasstore@gmail.com
-              password: Password@weq112
-      responses:
-        "200":
-          description: OK - returns auth tokens / session (implementation dependent)
-  /auth/signout:
-    post:
-      summary: Sign out / revoke session
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SigninRequest"
-            example:
-              email: chidibede@gmail.com
-              password: Password@weq112
-      responses:
-        "200":
-          description: OK
-  /auth/forgot-password:
-    post:
-      summary: Request password reset (send OTP)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ForgotPasswordRequest"
-            example:
-              email: caracolasstore@gmail.com
-      responses:
-        "200":
-          description: OK - OTP sent
-  /auth/reset-password:
-    post:
-      summary: Reset password (after verifying OTP)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResetPasswordRequest"
-            example:
-              email: caracolasstore@gmail.com
-              newPassword: Password@weq112
-      responses:
-        "200":
-          description: OK - password reset
-  /auth/verify-reset-password:
-    post:
-      summary: Verify reset OTP
-      requestBody:
-        required: true
         content:
           application/json:
             schema:
               type: object
-              required:
-                - otp
-                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+  /auth/signin:
+    post:
+      summary: signin
+      tags:
+        - auth
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+  /auth/signout:
+    post:
+      summary: signout
+      tags:
+        - auth
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+  /auth/forgot-password:
+    post:
+      summary: forgot-password
+      tags:
+        - auth
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+  /auth/reset-password:
+    post:
+      summary: reset-password
+      tags:
+        - auth
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                newPassword:
+                  type: string
+  /auth/verify-reset-password:
+    post:
+      summary: verify-reset-password
+      tags:
+        - auth
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
               properties:
                 otp:
                   type: string
+                  format: color
                 email:
                   type: string
-            example:
-              otp: "810226"
-              email: caracolasstore@gmail.com
-      responses:
-        "200":
-          description: OK - OTP verified
+                  format: email
   /auth/verify-otp:
     post:
-      summary: Verify account OTP
+      summary: verify otp
+      tags:
+        - auth
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/VerifyOtpRequest"
-            example:
-              email: chidimarshalbede@gmail.com
-              otp: "498906"
-      responses:
-        "200":
-          description: OK
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                otp:
+                  type: string
+                  format: color
   /auth/resend-otp:
     post:
-      summary: Resend OTP
+      summary: resend otp
+      tags:
+        - auth
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ForgotPasswordRequest"
-            example:
-              email: caracolasstore@gmail.com
-      responses:
-        "200":
-          description: OTP resent
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
   /auth/refresh-token:
     post:
-      summary: Refresh access token using refresh token cookie
+      summary: refresh token
+      tags:
+        - auth
       parameters:
-        - in: cookie
-          name: refreshToken
-          required: true
+        - name: Cookie
+          in: header
           schema:
             type: string
-          description: Refresh token (cookie). Example shown in Postman headers.
-      responses:
-        "200":
-          description: New access token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RefreshTokenResponse"
-  /auth/first-login/set-password:
-    post:
-      summary: Complete first login by setting a new password
-      description: >
-        Used by invited users on their first login to replace the temporary password
-        with a new one.
-      security:
-        - bearerAuth: []
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FirstLoginSetPasswordRequest"
-            example:
-              email: caracolasstore+8@gmail.com
-              currentPassword: Kjns!vp3B5c&
-              newPassword: Password@weq112
-      responses:
-        "200":
-          description: Password updated successfully
-        "400":
-          description: Invalid current password or request
-        "401":
-          description: Unauthorized
+              type: object
   /api/payment/confirm:
     post:
-      summary: Confirm payment success (webhook/callback style)
+      summary: confirm payment on success
+      tags:
+        - signup payment
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PaymentConfirmRequest"
-            example:
-              paymentStatus: succeeded
-              providerTxReference: "6767998765444789765433"
-              paymentId: 01K9DHPK9BDNGT0PTJ1Q1206CT
-      responses:
-        "200":
-          description: OK
+              type: object
+              properties:
+                paymentStatus:
+                  type: string
+                providerTxReference:
+                  type: string
+                  format: utc-millisec
+                paymentId:
+                  type: string
   /api/payment/plans:
     get:
       summary: Fetch payment plans
-      responses:
-        "200":
-          description: OK - list of plans
+      tags:
+        - signup payment
+      responses: {}
   /api/payment/plans/select:
     post:
-      summary: Select payment plan
+      summary: select payment plan
+      tags:
+        - signup payment
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SelectPlanRequest"
-            example:
-              planId: 01K9C40J48F6YFQSGHF9JZG9JT
-              companyId: 01K9DHNRHY9CBXGTASXZH8B3AV
-              userId: 01K9DHJ3ZHRYPBNTQH3NQ5TZBK
-              provider: Paystack
-      responses:
-        "200":
-          description: OK
-  /api/surveys/templates/{templateId}/metadata:
+              type: object
+              properties:
+                planId:
+                  type: string
+                companyId:
+                  type: string
+                userId:
+                  type: string
+                provider:
+                  type: string
+  /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/metadata:
     patch:
-      summary: Update template metadata
+      summary: update template metadata
+      tags:
+        - survey
+      responses: {}
       security:
-        - bearerAuth: []
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          schema:
-            type: string
+        - BearerAuth: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SurveyTemplateMetadata"
-            example:
-              companyId: 01K9DA5HM0406JZ1PP322VA1M8
-              title: Executive Team Evaluation V2
-              description: Used for internal assessment of executive performance V2
-      responses:
-        "200":
-          description: OK
-  /api/surveys/templates/{templateId}/copy:
-    post:
-      summary: Copy/Duplicate template
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
         content:
           application/json:
             schema:
@@ -642,628 +349,329 @@ paths:
               properties:
                 companyId:
                   type: string
-            example:
-              companyId: 01K9DA5HM0406JZ1PP322VA1M8
-      responses:
-        "200":
-          description: OK - copy created
-  /api/surveys/templates/{templateId}/questions:
-    put:
-      summary: Update template questions (replace)
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SurveyQuestions"
-      responses:
-        "200":
-          description: OK
-  /api/surveys/templates/{draftId}/autosave:
-    put:
-      summary: Auto-save template (replace/save draft)
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: draftId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the draft being auto-saved
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SurveyQuestions"
-      responses:
-        "200":
-          description: OK - draft saved
-  /api/surveys/templates/{draftId}/publish:
+                title:
+                  type: string
+                description:
+                  type: string
+  /api/surveys/templates/01KA0ZE56JZFXMWZGE23VAN688/copy:
     post:
-      summary: Publish template (publish a draft)
+      summary: Copy or Duplicate template
+      tags:
+        - survey
+      responses: {}
       security:
-        - bearerAuth: []
-      parameters:
-        - name: draftId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the draft to publish
+        - BearerAuth: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SurveyQuestions"
-      responses:
-        "200":
-          description: OK - draft published
+              type: object
+              properties:
+                companyId:
+                  type: string
+  /api/surveys/templates/01KA0ZTV53940PTFHPVS2XXJYV/questions:
+    put:
+      summary: Update template questions
+      tags:
+        - survey
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companyId:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      required:
+                        type: boolean
+                      skippable:
+                        type: boolean
+                      helpText:
+                        type: string
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
+  /api/surveys/templates/01KAV9RAJN1XTRHR79SGKQWQKZ/autosave:
+    put:
+      summary: Auto save template
+      tags:
+        - survey
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06P/publish:
+    post:
+      summary: Publish template
+      tags:
+        - survey
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companyId:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      required:
+                        type: boolean
+                      skippable:
+                        type: boolean
+                      helpText:
+                        type: string
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
   /api/surveys/backoffice/templates:
     post:
-      summary: Create survey template (backoffice)
+      summary: create survey template Backoffice Dgoval
+      tags:
+        - survey
+      responses: {}
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SurveyQuestions"
-      responses:
-        "201":
-          description: Created
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      required:
+                        type: boolean
+                      skippable:
+                        type: boolean
+                      helpText:
+                        type: string
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
     get:
-      summary: List templates (backoffice) with pagination
-      security:
-        - bearerAuth: []
+      summary: list templates by dgoval
+      tags:
+        - survey
       parameters:
-        - in: query
-          name: page
+        - name: page
+          in: query
           schema:
             type: integer
-        - in: query
-          name: limit
+        - name: limit
+          in: query
           schema:
             type: integer
-        - in: query
-          name: sort
+        - name: sort
+          in: query
           schema:
             type: string
-        - in: query
-          name: sortBy
+        - name: sortBy
+          in: query
           schema:
             type: string
-      responses:
-        "200":
-          description: OK - paginated list
-  /api/surveys/{companyId}/templates:
-    get:
-      summary: List all templates for selected company (or createdBy=me)
+      responses: {}
       security:
-        - bearerAuth: []
+        - BearerAuth: []
+  /api/surveys/01K9DA5HM0406JZ1PP322VA1M8/templates:
+    get:
+      summary: list all templates for selected company
+      tags:
+        - survey
       parameters:
-        - name: companyId
-          in: path
-          required: true
+        - name: sortBy
+          in: query
           schema:
             type: string
-        - in: query
-          name: sortBy
-          schema:
-            type: string
-        - in: query
-          name: limit
+        - name: limit
+          in: query
           schema:
             type: integer
-        - in: query
-          name: page
+        - name: page
+          in: query
           schema:
             type: integer
-        - in: query
-          name: sort
+        - name: sort
+          in: query
           schema:
             type: string
-        - in: query
-          name: createdBy
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-  /api/surveys/templates/{templateId}/versions:
-    get:
-      summary: List template versions
+      responses: {}
       security:
-        - bearerAuth: []
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-  /api/surveys/{templateId}/templates/details:
+        - BearerAuth: []
+  /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/versions:
     get:
-      summary: Get template details
+      summary: list template versions
+      tags:
+        - survey
+      responses: {}
       security:
-        - bearerAuth: []
-      parameters:
-        - name: templateId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK - template details
+        - BearerAuth: []
+  /api/surveys/01KA0ZJYTBD28PWHJ929ZFW06N/templates/details:
+    get:
+      summary: get template
+      tags:
+        - survey
+      responses: {}
+      security:
+        - BearerAuth: []
   /api/surveys/templates/metadata:
     post:
-      summary: Create survey template metadata
+      summary: create survey template metadata
+      tags:
+        - survey
+      responses: {}
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SurveyTemplateMetadata"
-      responses:
-        "201":
-          description: Created
+              type: object
+              properties:
+                companyId:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+  /api/surveys/01KA0ZJYTB28PWHJ929ZFW06N/template:
+    delete:
+      summary: delete template
+      tags:
+        - survey
+      responses: {}
+      security:
+        - BearerAuth: []
   /api/companies/logo/upload:
     post:
-      summary: Upload company logo (form-data file)
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                logo:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: OK - file uploaded
+      summary: upload logo
+      tags:
+        - signup company
+      responses: {}
   /api/companies:
     post:
-      summary: Create company
+      summary: create company
+      tags:
+        - signup company
+      responses: {}
       requestBody:
-        required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/CompanyCreateRequest"
-            example:
-              logoUrl: https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg
-              name: Access Trust bank
-              category: Public
-              industry: Banking
-              address: Festac
-              userId: 01K9JCE76PWDEE18WADQDFZ82Z
-      responses:
-        "201":
-          description: Created
-
-  # Branding endpoints
-  /api/orgs/{companyId}/branding:
-    put:
-      summary: Update company branding
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Update branding fields (partial or full)
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CompanyBranding"
-            example:
-              brandName: "DGOVAL"
-              tagline: "Assess with confidence"
-              primaryHex: "#0A84FF"
-              secondaryHex: "#111827"
-              paletteTokens:
-                primary:
-                  "50": "#F0F9FF"
-                  "500": "#0A84FF"
-                  "900": "#00285A"
-      responses:
-        "200":
-          description: Updated branding returned
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CompanyBranding"
-
-  /api/orgs/{companyId}/logo:
-    put:
-      summary: Upload company logo (multipart form)
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
             schema:
               type: object
               properties:
-                logo:
+                logoUrl:
                   type: string
-                  format: binary
-      responses:
-        "200":
-          description: Uploaded — returns `logoUrl`
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  logoUrl:
-                    type: string
-                    format: uri
-              example:
-                logoUrl: "https://res.cloudinary.com/.../logo.png"
-    delete:
-      summary: Delete company logo
-      description: Remove the currently stored logo for the company (Postman collection endpoint).
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Logo deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-              example:
-                success: true
-                message: "Logo deleted"
-  /api/orgs/{companyId}/details:
-    get:
-      summary: "Get company details (Postman collection: get company details)"
-      description: "Returns basic company details and metadata for the requested company."
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Company details object
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  companyId:
-                    type: string
-                  name:
-                    type: string
-                  logoUrl:
-                    type: string
-                    format: uri
-                  category:
-                    type: string
-                  industry:
-                    type: string
-                  address:
-                    type: string
-                  branding:
-                    $ref: "#/components/schemas/CompanyBranding"
-              example:
-                companyId: 01K9DHNRHY9CBXGTASXZH8B3AV
-                name: "GTTT Bank"
-                logoUrl: "https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/...jpg"
-                category: Public
-                industry: Banking
-                address: Festac
-                branding:
-                  companyId: 01K9DA5HM0406JZ1PP322VA1M8
-                  brandName: DGOVAL
-                  primaryHex: "#0A84FF"
-
-  /api/orgs/{companyId}/invites/resend:
-    post:
-      summary: Resend an existing invite email
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: companyId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TeamInviteResendRequest"
-            example:
-              userId: 01KAGFAZGVB3133TFF9S6XARZR
-              loginUrl: https://app.dgoval.com/login
-      responses:
-        "200":
-          description: Invite resent
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/members/deactivate:
-    post:
-      summary: Deactivate a team member
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: companyId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TeamMemberStatusRequest"
-            example:
-              userId: 01KAGFAZGVB3133TFF9S6XARZR
-      responses:
-        "200":
-          description: Member deactivated
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/members/reactivate:
-    post:
-      summary: Reactivate a team member
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: companyId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TeamMemberStatusRequest"
-            example:
-              userId: 01KAGFAZGVB3133TFF9S6XARZR
-      responses:
-        "200":
-          description: Member reactivated
-        "400":
-          description: Invalid request
-        "401":
-          description: Unauthorized
-  /api/orgs/invites/template:
-    get:
-      summary: Download CSV invite template
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: CSV template file
-          content:
-            text/csv:
-              schema:
-                type: string
-                format: binary
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/invites/csv/parse:
-    post:
-      summary: Parse uploaded CSV of team invites (returns parsed rows + validation)
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Organisation / company ID
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
+                  format: uri
+                name:
                   type: string
-                  format: binary
-            encoding:
-              file:
-                contentType: text/csv
-      responses:
-        "200":
-          description: Parsed CSV rows and validation result
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  parsed:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/ParsedCsvRow"
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        row:
-                          type: integer
-                        message:
-                          type: string
-              example:
-                parsed:
-                  - email: caracolasstore+1@gmail.com
-                    firstName: Cara
-                    lastName: Colas
-                    role: evaluation_manager
-                    loginUrl: https://app.dgoval.com/login
-                errors: []
-        "400":
-          description: Invalid CSV or request
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/invites/csv:
-    post:
-      summary: Bulk send invites — accept JSON array of members OR a CSV body
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Organisation / company ID
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BulkInviteRequest"
-            example:
-              members:
-                - first_name: Ada
-                  last_name: Lovelace
-                  email: ada@example.com
-                  role: admin
-                - first_name: Alan
-                  last_name: Turing
-                  email: alan@example.com
-                  role: evaluator
-          text/csv:
-            schema:
-              type: string
-              format: binary
-            example: |
-              email,firstName,lastName,role,loginUrl
-              caracolasstore+1@gmail.com,Cara,Colas,evaluation_manager,https://app.dgoval.com/login
-      responses:
-        "200":
-          description: Bulk invites processed (some may fail)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  processed:
-                    type: integer
-                  succeeded:
-                    type: integer
-                  failed:
-                    type: integer
-                  details:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        email:
-                          type: string
-                        status:
-                          type: string
-                        message:
-                          type: string
-              example:
-                processed: 2
-                succeeded: 2
-                failed: 0
-                details:
-                  - email: ada@example.com
-                    status: success
-                    message: ""
-                  - email: alan@example.com
-                    status: success
-                    message: ""
-        "400":
-          description: Invalid CSV or request
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/members:
-    put:
-      summary: Update a team member (e.g. change role)
-      tags:
-        - Team
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: companyId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
+                category:
+                  type: string
+                industry:
+                  type: string
+                address:
+                  type: string
                 userId:
                   type: string
+    get:
+      summary: list companies for user
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                logoUrl:
+                  type: string
+                  format: uri
+                name:
+                  type: string
+                category:
+                  type: string
+                industry:
+                  type: string
+                address:
+                  type: string
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites:
+    post:
+      summary: Create Invite
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
                 email:
                   type: string
                   format: email
@@ -1273,55 +681,278 @@ paths:
                   type: string
                 lastName:
                   type: string
-            example:
-              userId: 01KAGE0HRSYEGJR05CFEAFGPWA
-              email: caracolasstore+8@gmail.com
-              role: viewer
-              firstName: Bree
-              lastName: Colas
-      responses:
-        "200":
-          description: Member updated
-        "400":
-          description: Validation error
-        "401":
-          description: Unauthorized
-  /api/orgs/{companyId}/team:
-    get:
-      summary: List organisation team members
+                loginUrl:
+                  type: string
+                  format: uri
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members:
+    put:
+      summary: update member
       tags:
-        - Team
+        - Team invite
+      responses: {}
       security:
-        - bearerAuth: []
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+  /auth/first-login/set-password:
+    post:
+      summary: First sign in
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites/resend:
+    post:
+      summary: Resend invite
+      tags:
+        - Team invite
       parameters:
-        - in: path
-          name: companyId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: page
+        - name: Authorization
+          in: header
+          required: false
+          deprecated: false
+          schema: {}
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                loginUrl:
+                  type: string
+                  format: uri
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/deactivate:
+    post:
+      summary: deactivate user
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/reactivate:
+    post:
+      summary: reactivate user
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                loginUrl:
+                  type: string
+                  format: uri
+  /api/orgs/invites/template:
+    get:
+      summary: Download csv template
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                loginUrl:
+                  type: string
+                role:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/invites/csv/parse:
+    post:
+      summary: parse bulk csv
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/invites/csv:
+    post:
+      summary: bulk send invites csv array
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                members:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                        format: color
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      role:
+                        type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/team:
+    get:
+      summary: list members
+      tags:
+        - Team invite
+      parameters:
+        - name: page
+          in: query
           schema:
             type: integer
-        - in: query
-          name: limit
+        - name: limit
+          in: query
           schema:
             type: integer
-        - in: query
-          name: sortBy
+        - name: sortBy
+          in: query
           schema:
             type: string
-      responses:
-        "200":
-          description: List of team members
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TeamMember"
-        "401":
-          description: Unauthorized
-
-security:
-  - {}
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/members/csv/export:
+    get:
+      summary: export team members
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/01KB7H5MS3BV54K7JE427JBP7C/members:
+    delete:
+      summary: delete member
+      tags:
+        - Team invite
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/logo:
+    delete:
+      summary: delete logo
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+    put:
+      summary: put company logo branding
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/details:
+    put:
+      summary: update company details
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+    get:
+      summary: get company details
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/branding:
+    put:
+      summary: put company branding
+      tags:
+        - company branding
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                primaryHex:
+                  type: string
+                  format: color
+                secondaryHex:
+                  type: string
+                  format: color
+                revisionId:
+                  type: string
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
