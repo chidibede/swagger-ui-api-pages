@@ -178,7 +178,6 @@ components:
         userId:
           type: string
 
-    # Branding schemas
     PaletteTint:
       type: object
       properties:
@@ -282,8 +281,7 @@ components:
           format: email
         role:
           type: string
-          description: >
-            Role to assign to the invited user (e.g. evaluator, evaluation_manager, admin).
+          description: Role to assign to the invited user (e.g. evaluator, evaluation_manager, admin).
         firstName:
           type: string
         lastName:
@@ -402,7 +400,6 @@ components:
         loginUrl: https://app.dgoval.com/login
 
 paths:
-
   /auth/signup:
     post:
       summary: Sign up (register a new user)
@@ -906,7 +903,6 @@ paths:
       responses:
         '201':
           description: Created
-
     get:
       summary: List companies for user
       security:
@@ -929,7 +925,6 @@ paths:
                       type: string
                       format: uri
 
-  # Branding endpoints (existing + added from Postman collection)
   /api/orgs/{companyId}/branding:
     put:
       summary: Update company branding
@@ -1000,7 +995,6 @@ paths:
                     format: uri
               example:
                 logoUrl: "https://res.cloudinary.com/.../logo.png"
-
     delete:
       summary: Delete company logo
       description: Remove the currently stored logo for the company (Postman collection endpoint).
@@ -1077,7 +1071,7 @@ paths:
 
     put:
       summary: Update company details (Postman collection: update company details)
-      description: Update basic details for the company (partial updates allowed). Example body in Postman shows only name.
+      description: Update basic details for the company (partial updates allowed).
       security:
         - bearerAuth: []
       parameters:
@@ -1479,5 +1473,4 @@ paths:
         '401':
           description: Unauthorized
 
-security:
-  - {}
+security: []
