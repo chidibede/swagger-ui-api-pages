@@ -304,7 +304,6 @@ paths:
                   type: string
                 providerTxReference:
                   type: string
-                  format: utc-millisec
                 paymentId:
                   type: string
   /api/payment/plans:
@@ -333,6 +332,9 @@ paths:
                   type: string
                 provider:
                   type: string
+                callbackUrl:
+                  type: string
+                  format: uri
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/metadata:
     patch:
       summary: update template metadata
@@ -743,7 +745,7 @@ paths:
                 loginUrl:
                   type: string
                   format: uri
-  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/deactivate:
+  /api/orgs/{COMPANY_ID}/members/deactivate:
     post:
       summary: deactivate user
       tags:
@@ -759,6 +761,12 @@ paths:
               properties:
                 userId:
                   type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/reactivate:
     post:
       summary: reactivate user
@@ -803,7 +811,7 @@ paths:
                   type: string
                 lastName:
                   type: string
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/invites/csv/parse:
+  /api/orgs/{COMPANY_ID}/invites/csv/parse:
     post:
       summary: parse bulk csv
       tags:
@@ -811,6 +819,12 @@ paths:
       responses: {}
       security:
         - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
   /api/orgs/{COMPANY_ID}/invites/csv:
     post:
       summary: bulk send invites csv array
@@ -881,7 +895,7 @@ paths:
         required: true
         schema:
           type: string
-  /api/orgs/01KB7H5MS3BV54K7JE427JBP7C/members:
+  /api/orgs/01KB7K5RRYC6XM6YAB5Q6ZXA28/members:
     delete:
       summary: delete member
       tags:
@@ -951,6 +965,405 @@ paths:
                   format: color
                 revisionId:
                   type: string
+  /api/orgs/{COMPANY_ID}/board-members:
+    get:
+      summary: List board members
+      tags:
+        - Board members
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      summary: create board members
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                position:
+                  type: string
+                category:
+                  type: string
+                committee:
+                  type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members:
+    patch:
+      summary: update board members
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                memberId:
+                  type: string
+    delete:
+      summary: delete board member
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memberId:
+                  type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/export:
+    get:
+      summary: export board members
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memberId:
+                  type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/bulk:
+    post:
+      summary: bulk create board members
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                members:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      position:
+                        type: string
+                      category:
+                        type: string
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/csv/parse:
+    post:
+      summary: parse csv
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/template:
+    get:
+      summary: download template
+      tags:
+        - Board members
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                position:
+                  type: string
+                category:
+                  type: string
+                committee:
+                  type: string
+  /api/orgs/{COMPANY_ID}/subscriptions:
+    get:
+      summary: fetch subscriptions
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing:
+    get:
+      summary: fetch billings
+      tags:
+        - Billing and Subscription
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: page
+          in: query
+          schema:
+            type: integer
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/billing/invoices/01KBQNXC8APZHPBB0DX38SDG6B/download:
+    get:
+      summary: download invoice
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/billing/cards:
+    post:
+      summary: Add card
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionId:
+                  type: string
+                callbackUrl:
+                  type: string
+                  format: uri
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/cancel:
+    post:
+      summary: cancel subscription
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionId:
+                  type: string
+                reason:
+                  type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/cards/update:
+    put:
+      summary: update card
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionId:
+                  type: string
+                paymentMethodId:
+                  type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/cards/verify-update:
+    get:
+      summary: verify update card
+      tags:
+        - Billing and Subscription
+      parameters:
+        - name: subscriptionId
+          in: query
+          schema:
+            type: string
+        - name: paymentMethodId
+          in: query
+          schema:
+            type: string
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionId:
+                  type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/cards/verify-add:
+    get:
+      summary: verify add card
+      tags:
+        - Billing and Subscription
+      parameters:
+        - name: reference
+          in: query
+          schema:
+            type: string
+        - name: appUrl
+          in: query
+          schema:
+            type: string
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/plan-change/initiate:
+    post:
+      summary: Upgrade plan
+      tags:
+        - Billing and Subscription
+      responses: {}
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscriptionId:
+                  type: string
+                newPlanId:
+                  type: string
+                type:
+                  type: string
+                callbackUrl:
+                  type: string
+                  format: uri
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/billing/plan-change/confirm:
+    get:
+      summary: Confirm Upgrade
+      tags:
+        - Billing and Subscription
+      parameters:
+        - name: planChangeRequestId
+          in: query
+          schema:
+            type: string
+        - name: reference
+          in: query
+          schema:
+            type: string
+        - name: redirect
+          in: query
+          schema:
+            type: string
+      responses: {}
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
 components:
   securitySchemes:
     BearerAuth:
