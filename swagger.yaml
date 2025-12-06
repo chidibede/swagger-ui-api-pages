@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: dgoval export
+  title: dgoval export updated
   version: 1.0.0
   description: ''
 servers:
@@ -728,9 +728,8 @@ paths:
       parameters:
         - name: Authorization
           in: header
-          required: false
-          deprecated: false
-          schema: {}
+          schema:
+            type: string
       responses: {}
       security:
         - BearerAuth: []
@@ -1022,7 +1021,7 @@ paths:
                   type: string
                 committee:
                   type: string
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members:
+  /api/orgs/{COMPANY_ID}/board-members/{memberId}/update:
     patch:
       summary: update board members
       tags:
@@ -1040,6 +1039,13 @@ paths:
                   type: string
                 memberId:
                   type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/board-members/{memberId}/delete:
     delete:
       summary: delete board member
       tags:
@@ -1047,15 +1053,13 @@ paths:
       responses: {}
       security:
         - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                memberId:
-                  type: string
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/export:
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/orgs/{COMPANY_ID}/board-members/export:
     get:
       summary: export board members
       tags:
@@ -1063,14 +1067,12 @@ paths:
       responses: {}
       security:
         - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                memberId:
-                  type: string
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
   /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/bulk:
     post:
       summary: bulk create board members
@@ -1117,25 +1119,6 @@ paths:
       responses: {}
       security:
         - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                  format: email
-                position:
-                  type: string
-                category:
-                  type: string
-                committee:
-                  type: string
   /api/orgs/{COMPANY_ID}/subscriptions:
     get:
       summary: fetch subscriptions
@@ -1271,14 +1254,6 @@ paths:
       responses: {}
       security:
         - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                subscriptionId:
-                  type: string
     parameters:
       - name: COMPANY_ID
         in: path
