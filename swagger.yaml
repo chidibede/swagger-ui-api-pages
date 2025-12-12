@@ -9,9 +9,9 @@ paths:
   /auth/signup:
     post:
       summary: auth sign up
+      responses: {}
       tags:
         - auth
-      responses: {}
       description: >-
         ## Sign Up Endpoint
 
@@ -161,23 +161,35 @@ paths:
                   type: string
                 lastName:
                   type: string
+            example:
+              email: chidimarshalbede@gmail.com
+              password: John@weq112
+              firstName: Chidi
+              lastName: Marshal
   /auth/signin:
     post:
       summary: signin
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
             schema:
               type: object
+            example: |-
+              {
+                  "email": "caracolasstore@gmail.com",
+                  // "password": "Password@weq112"
+                  "password": "John@weq112"
+                  // "password": "KtQhrb@W&w&a"
+              }
   /auth/signout:
     post:
       summary: signout
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -189,12 +201,15 @@ paths:
                   format: email
                 password:
                   type: string
+            example:
+              email: chidibede@gmail.com
+              password: Password@weq112
   /auth/forgot-password:
     post:
       summary: forgot-password
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -204,12 +219,14 @@ paths:
                 email:
                   type: string
                   format: email
+            example:
+              email: caracolasstore@gmail.com
   /auth/reset-password:
     post:
       summary: reset-password
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -221,12 +238,15 @@ paths:
                   format: email
                 newPassword:
                   type: string
+            example:
+              email: caracolasstore@gmail.com
+              newPassword: Password@weq112
   /auth/verify-reset-password:
     post:
       summary: verify-reset-password
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -239,12 +259,15 @@ paths:
                 email:
                   type: string
                   format: email
+            example:
+              otp: '810226'
+              email: caracolasstore@gmail.com
   /auth/verify-otp:
     post:
       summary: verify otp
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -257,12 +280,15 @@ paths:
                 otp:
                   type: string
                   format: color
+            example:
+              email: chidimarshalbede@gmail.com
+              otp: '498906'
   /auth/resend-otp:
     post:
       summary: resend otp
+      responses: {}
       tags:
         - auth
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -272,17 +298,21 @@ paths:
                 email:
                   type: string
                   format: email
+            example:
+              email: caracolasstore@gmail.com
   /auth/refresh-token:
     post:
       summary: refresh token
-      tags:
-        - auth
       parameters:
         - name: Cookie
           in: header
           schema:
             type: string
+          example: >-
+            refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMUs5REhKM1pIUllQQk5UUUgzTlE1VFpCSyIsImVtYWlsIjoiY2FyYWNvbGFzc3RvcmVAZ21haWwuY29tIiwiZmlyc3ROYW1lIjoiQ2FyYWNvbGFzIiwibGFzdE5hbWUiOiJzdG9yZSIsIm1lbWJlcnNoaXBzIjpbeyJjb21wYW55SWQiOiIwMUs5REhOUkhZOUNCWEdUQVNYWkg4QjNBViIsInJvbGUiOiJhZG1pbiJ9XSwiY3VycmVudFN0ZXAiOiJjb21wbGV0ZWQiLCJzZWxlY3RlZFBsYW5JZCI6IjAxSzlDNDBKNDhGNllGUVNHSEY5SlpHOUpUIiwidG9rZW5UeXBlIjoicmVmcmVzaCIsImlhdCI6MTc2Mjc3MjEwOSwiZXhwIjoxNzYzMzc2OTA5fQ.HqYNVzIe7RLlhUV2-uwSxJUcYxCqEpGFEot7GwwXQps
       responses: {}
+      tags:
+        - auth
       requestBody:
         content:
           application/json:
@@ -291,9 +321,9 @@ paths:
   /api/payment/confirm:
     post:
       summary: confirm payment on success
+      responses: {}
       tags:
         - signup payment
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -306,18 +336,22 @@ paths:
                   type: string
                 paymentId:
                   type: string
+            example:
+              paymentStatus: succeeded
+              providerTxReference: fek7boe7on
+              paymentId: 01KBZ3X4MT9NXGK8XPZG44PCR3
   /api/payment/plans:
     get:
       summary: Fetch payment plans
+      responses: {}
       tags:
         - signup payment
-      responses: {}
   /api/payment/plans/select:
     post:
       summary: select payment plan
+      responses: {}
       tags:
         - signup payment
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -335,12 +369,18 @@ paths:
                 callbackUrl:
                   type: string
                   format: uri
+            example:
+              planId: 01KBZ0AZ36JX8Y19ZMA11A9NXQ
+              companyId: 01KB624SH9AJAJSCH57P0ZMTNA
+              userId: 01KB61XYMR3R2HNKVJRJMG1BZD
+              provider: Paystack
+              callbackUrl: https://app.dgoval.com/payments/callback
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/metadata:
     patch:
       summary: update template metadata
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -355,12 +395,16 @@ paths:
                   type: string
                 description:
                   type: string
+            example:
+              companyId: 01K9DA5HM0406JZ1PP322VA1M8
+              title: Executive Team Evaluation V2
+              description: Used for internal assessment of executive performance V2
   /api/surveys/templates/01KA0ZE56JZFXMWZGE23VAN688/copy:
     post:
       summary: Copy or Duplicate template
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -371,12 +415,14 @@ paths:
               properties:
                 companyId:
                   type: string
+            example:
+              companyId: 01K9DA5HM0406JZ1PP322VA1M8
   /api/surveys/templates/01KA0ZTV53940PTFHPVS2XXJYV/questions:
     put:
       summary: Update template questions
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -413,12 +459,42 @@ paths:
                             type: string
                           scalePoints:
                             type: integer
+            example:
+              companyId: 01K9DA5HM0406JZ1PP322VA1M8
+              questions:
+                - position: 1
+                  text: How clear are the team's goals?
+                  type: likert
+                  required: true
+                  skippable: false
+                  helpText: 1 = Strongly disagree, 5 = Strongly agree
+                  likert:
+                    scaleMinLabel: Strongly disagree
+                    scaleMaxLabel: Strongly agree
+                    scalePoints: 5
+                - position: 2
+                  text: Which leadership areas need improvement?
+                  type: longText
+                  required: false
+                  skippable: true
+                  helpText: Add as much detail as possible
+                - position: 3
+                  text: State your department
+                  type: shortText
+                  required: true
+                  skippable: false
+                  helpText: Keep it short
+                - position: 4
+                  text: Do you receive clear direction from leadership?
+                  type: yesNo
+                  required: true
+                  skippable: false
   /api/surveys/templates/01KAV9RAJN1XTRHR79SGKQWQKZ/autosave:
     put:
       summary: Auto save template
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -426,12 +502,117 @@ paths:
           application/json:
             schema:
               type: object
+            example: |-
+              {
+                  "companyId": "01K9DHNRHY9CBXGTASXZH8B3AV",
+                  "questions": [
+                      {
+                          "position": 1,
+                          "text": "How clear are the team's goals?",
+                          "type": "likert",
+                          "required": true,
+                          "skippable": false,
+                          "helpText": "1 = Strongly disagree, 5 = Strongly agree",
+                          "likert": {
+                              "scaleMinLabel": "Strongly disagree",
+                              "scaleMaxLabel": "Strongly agree",
+                              "scalePoints": 5
+                          }
+                      },
+                      {
+                          "position": 2,
+                          "text": "Which leadership areas need improvement?",
+                          "type": "longText",
+                          "required": false,
+                          "skippable": true,
+                          "helpText": "Add as much detail as possible"
+                      },
+                      {
+                          "position": 3,
+                          "text": "State your department",
+                          "type": "shortText",
+                          "required": true,
+                          "skippable": false,
+                          "helpText": "Keep it short"
+                      },
+                      {
+                          "position": 4,
+                          "text": "Do you receive clear direction from leadership?",
+                          "type": "yesNo",
+                          "required": true,
+                          "skippable": false
+                      }
+                      // {
+                      //     "position": 5,
+                      //     "text": "Rate the effectiveness of leadership communication",
+                      //     "type": "singleChoice",
+                      //     "required": true,
+                      //     "skippable": false,
+                      //     "options": [
+                      //         {
+                      //             "position": 1,
+                      //             "label": "Poor",
+                      //             "value": "poor",
+                      //             "isDefault": false
+                      //         },
+                      //         {
+                      //             "position": 2,
+                      //             "label": "Fair",
+                      //             "value": "fair",
+                      //             "isDefault": false
+                      //         },
+                      //         {
+                      //             "position": 3,
+                      //             "label": "Good",
+                      //             "value": "good",
+                      //             "isDefault": true
+                      //         },
+                      //         {
+                      //             "position": 4,
+                      //             "label": "Excellent",
+                      //             "value": "excellent",
+                      //             "isDefault": false
+                      //         }
+                      //     ]
+                      // },
+                      // {
+                      //     "position": 6,
+                      //     "text": "Select the tools you use weekly",
+                      //     "type": "multipleChoice",
+                      //     "required": false,
+                      //     "skippable": true,
+                      //     "helpText": "Choose all that apply",
+                      //     "options": [
+                      //         {
+                      //             "position": 1,
+                      //             "label": "Slack",
+                      //             "value": "slack"
+                      //         },
+                      //         {
+                      //             "position": 2,
+                      //             "label": "Teams",
+                      //             "value": "teams"
+                      //         },
+                      //         {
+                      //             "position": 3,
+                      //             "label": "Zoom",
+                      //             "value": "zoom"
+                      //         },
+                      //         {
+                      //             "position": 4,
+                      //             "label": "Email",
+                      //             "value": "email"
+                      //         }
+                      //     ]
+                      // }
+                  ]
+              }
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06P/publish:
     post:
       summary: Publish template
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -468,12 +649,83 @@ paths:
                             type: string
                           scalePoints:
                             type: integer
+            example:
+              companyId: 01K9DA5HM0406JZ1PP322VA1M8
+              questions:
+                - position: 1
+                  text: How clear are the team's goals?
+                  type: likert
+                  required: true
+                  skippable: false
+                  helpText: 1 = Strongly disagree, 5 = Strongly agree
+                  likert:
+                    scaleMinLabel: Strongly disagree
+                    scaleMaxLabel: Strongly agree
+                    scalePoints: 5
+                - position: 2
+                  text: Which leadership areas need improvement?
+                  type: longText
+                  required: false
+                  skippable: true
+                  helpText: Add as much detail as possible
+                - position: 3
+                  text: State your department
+                  type: shortText
+                  required: true
+                  skippable: false
+                  helpText: Keep it short
+                - position: 4
+                  text: Do you receive clear direction from leadership?
+                  type: yesNo
+                  required: true
+                  skippable: false
+                - position: 5
+                  text: Rate the effectiveness of leadership communication
+                  type: singleChoice
+                  required: true
+                  skippable: false
+                  options:
+                    - position: 1
+                      label: Poor
+                      value: poor
+                      isDefault: false
+                    - position: 2
+                      label: Fair
+                      value: fair
+                      isDefault: false
+                    - position: 3
+                      label: Good
+                      value: good
+                      isDefault: true
+                    - position: 4
+                      label: Excellent
+                      value: excellent
+                      isDefault: false
+                - position: 6
+                  text: Select the tools you use weekly
+                  type: multipleChoice
+                  required: false
+                  skippable: true
+                  helpText: Choose all that apply
+                  options:
+                    - position: 1
+                      label: Slack
+                      value: slack
+                    - position: 2
+                      label: Teams
+                      value: teams
+                    - position: 3
+                      label: Zoom
+                      value: zoom
+                    - position: 4
+                      label: Email
+                      value: email
   /api/surveys/backoffice/templates:
     post:
       summary: create survey template Backoffice Dgoval
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -512,77 +764,157 @@ paths:
                             type: string
                           scalePoints:
                             type: integer
+            example:
+              title: Executive Team Evaluation
+              description: Used for internal assessment of executive performance
+              questions:
+                - position: 1
+                  text: How clear are the team's goals?
+                  type: likert
+                  required: true
+                  skippable: false
+                  helpText: 1 = Strongly disagree, 5 = Strongly agree
+                  likert:
+                    scaleMinLabel: Strongly disagree
+                    scaleMaxLabel: Strongly agree
+                    scalePoints: 5
+                - position: 2
+                  text: Which leadership areas need improvement?
+                  type: longText
+                  required: false
+                  skippable: true
+                  helpText: Add as much detail as possible
+                - position: 3
+                  text: State your department
+                  type: shortText
+                  required: true
+                  skippable: false
+                  helpText: Keep it short
+                - position: 4
+                  text: Do you receive clear direction from leadership?
+                  type: yesNo
+                  required: true
+                  skippable: false
+                - position: 5
+                  text: Rate the effectiveness of leadership communication
+                  type: singleChoice
+                  required: true
+                  skippable: false
+                  options:
+                    - position: 1
+                      label: Poor
+                      value: poor
+                      isDefault: false
+                    - position: 2
+                      label: Fair
+                      value: fair
+                      isDefault: false
+                    - position: 3
+                      label: Good
+                      value: good
+                      isDefault: true
+                    - position: 4
+                      label: Excellent
+                      value: excellent
+                      isDefault: false
+                - position: 6
+                  text: Select the tools you use weekly
+                  type: multipleChoice
+                  required: false
+                  skippable: true
+                  helpText: Choose all that apply
+                  options:
+                    - position: 1
+                      label: Slack
+                      value: slack
+                    - position: 2
+                      label: Teams
+                      value: teams
+                    - position: 3
+                      label: Zoom
+                      value: zoom
+                    - position: 4
+                      label: Email
+                      value: email
     get:
       summary: list templates by dgoval
-      tags:
-        - survey
       parameters:
         - name: page
           in: query
           schema:
             type: integer
+          example: '1'
         - name: limit
           in: query
           schema:
             type: integer
+          example: '5'
         - name: sort
           in: query
           schema:
             type: string
+          example: desc
         - name: sortBy
           in: query
           schema:
             type: string
+          example: createdAt
       responses: {}
+      tags:
+        - survey
       security:
         - BearerAuth: []
   /api/surveys/01K9DA5HM0406JZ1PP322VA1M8/templates:
     get:
       summary: list all templates for selected company
-      tags:
-        - survey
       parameters:
         - name: sortBy
           in: query
           schema:
             type: string
+          example: updatedAt
         - name: limit
           in: query
           schema:
             type: integer
+          example: '5'
         - name: page
           in: query
           schema:
             type: integer
+          example: '1'
         - name: sort
           in: query
           schema:
             type: string
+          example: desc
       responses: {}
+      tags:
+        - survey
       security:
         - BearerAuth: []
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/versions:
     get:
       summary: list template versions
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
   /api/surveys/01KA0ZJYTBD28PWHJ929ZFW06N/templates/details:
     get:
       summary: get template
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
   /api/surveys/templates/metadata:
     post:
       summary: create survey template metadata
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -597,26 +929,30 @@ paths:
                   type: string
                 description:
                   type: string
+            example:
+              companyId: 01K9DHNRHY9CBXGTASXZH8B3AV
+              title: Executive Team Evaluation
+              description: Used for internal assessment of executive performance
   /api/surveys/01KA0ZJYTB28PWHJ929ZFW06N/template:
     delete:
       summary: delete template
+      responses: {}
       tags:
         - survey
-      responses: {}
       security:
         - BearerAuth: []
   /api/companies/logo/upload:
     post:
       summary: upload logo
+      responses: {}
       tags:
         - signup company
-      responses: {}
   /api/companies:
     post:
       summary: create company
+      responses: {}
       tags:
         - signup company
-      responses: {}
       requestBody:
         content:
           application/json:
@@ -636,11 +972,19 @@ paths:
                   type: string
                 userId:
                   type: string
+            example:
+              logoUrl: >-
+                https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg
+              name: Access Trust bank
+              category: Public
+              industry: Banking
+              address: Festac
+              userId: 01KB61XYMR3R2HNKVJRJMG1BZD
     get:
       summary: list companies for user
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -660,12 +1004,19 @@ paths:
                   type: string
                 address:
                   type: string
+            example:
+              logoUrl: >-
+                https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e-9d20-01e4dc10fecb.jpg
+              name: Guarantee Trust bank
+              category: Public
+              industry: Banking
+              address: Festac
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites:
     post:
       summary: Create Invite
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -686,12 +1037,18 @@ paths:
                 loginUrl:
                   type: string
                   format: uri
+            example:
+              email: caracolasstore+8@gmail.com
+              role: evaluator
+              firstName: John
+              lastName: Colas
+              loginUrl: https://app.dgoval.com/login
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members:
     put:
       summary: update member
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -699,12 +1056,13 @@ paths:
           application/json:
             schema:
               type: object
+            example: "{\r\n    \"email\": \"caracolasstore+8@gmail.com\",\r\n    // \"role\": \"viewer\",\r\n    // \"firstName\": \"Bree\",\r\n    // \"lastName\": \"Colas\",\r\n    \"userId\": \"01KAGE0HRSYEGJR05CFEAFGPWA\"\r\n}"
   /auth/first-login/set-password:
     post:
       summary: First sign in
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -720,17 +1078,22 @@ paths:
                   type: string
                 newPassword:
                   type: string
+            example:
+              email: caracolasstore+6@gmail.com
+              currentPassword: KtQhrb@W&w&a
+              newPassword: Password@weq112
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites/resend:
     post:
       summary: Resend invite
-      tags:
-        - Team invite
       parameters:
         - name: Authorization
           in: header
           schema:
             type: string
+          example: '{{AUTH_TOKEN}}'
       responses: {}
+      tags:
+        - Team invite
       security:
         - BearerAuth: []
       requestBody:
@@ -744,12 +1107,15 @@ paths:
                 loginUrl:
                   type: string
                   format: uri
+            example:
+              userId: 01KAGFAZGVB3133TFF9S6XARZR
+              loginUrl: https://app.dgoval.com/login
   /api/orgs/{COMPANY_ID}/members/deactivate:
     post:
       summary: deactivate user
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -760,18 +1126,21 @@ paths:
               properties:
                 userId:
                   type: string
+            example:
+              userId: 01KB7K5RRYC6XM6YAB5Q6ZXA28
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/reactivate:
     post:
       summary: reactivate user
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -785,12 +1154,15 @@ paths:
                 loginUrl:
                   type: string
                   format: uri
+            example:
+              userId: 01KAGFAZGVB3133TFF9S6XARZR
+              loginUrl: https://app.dgoval.com/login
   /api/orgs/invites/template:
     get:
       summary: Download csv template
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -810,12 +1182,18 @@ paths:
                   type: string
                 lastName:
                   type: string
+            example:
+              email: caracolasstore+1@gmail.com
+              loginUrl: yourapp.login.com
+              role: evaluation_manager
+              firstName: Cara
+              lastName: Colas
   /api/orgs/{COMPANY_ID}/invites/csv/parse:
     post:
       summary: parse bulk csv
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
     parameters:
@@ -824,12 +1202,13 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/invites/csv:
     post:
       summary: bulk send invites csv array
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -853,39 +1232,53 @@ paths:
                         format: email
                       role:
                         type: string
+            example:
+              members:
+                - first_name: Ada
+                  last_name: Lovelace
+                  email: ada@example.com
+                  role: admin
+                - first_name: Alan
+                  last_name: Turing
+                  email: caracolasstore+6@gmail.com
+                  role: evaluator
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/team:
     get:
       summary: list members
-      tags:
-        - Team invite
       parameters:
         - name: page
           in: query
           schema:
             type: integer
+          example: '1'
         - name: limit
           in: query
           schema:
             type: integer
+          example: '5'
         - name: sortBy
           in: query
           schema:
             type: string
+          example: dateAdded
       responses: {}
+      tags:
+        - Team invite
       security:
         - BearerAuth: []
   /api/orgs/{COMPANY_ID}/members/csv/export:
     get:
       summary: export team members
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
     parameters:
@@ -894,35 +1287,36 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01KB7K5RRYC6XM6YAB5Q6ZXA28/members:
     delete:
       summary: delete member
+      responses: {}
       tags:
         - Team invite
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/logo:
     delete:
       summary: delete logo
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
     put:
       summary: put company logo branding
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/details:
     put:
       summary: update company details
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -935,19 +1329,22 @@ paths:
                   type: string
                 address:
                   type: string
+            example:
+              name: Guaranee Trust Bank
+              address: Gbagada
     get:
       summary: get company details
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/branding:
     put:
       summary: put company branding
+      responses: {}
       tags:
         - company branding
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -964,29 +1361,37 @@ paths:
                   format: color
                 revisionId:
                   type: string
+            example:
+              primaryHex: '#0A84FF'
+              secondaryHex: '#111827'
+              revisionId: 01KAV3DSMXRCAC6VX7YXJ13X5M
   /api/orgs/{COMPANY_ID}/board-members:
     get:
       summary: List board members
-      tags:
-        - Board members
       parameters:
         - name: page
           in: query
           schema:
             type: integer
+          example: '1'
         - name: limit
           in: query
           schema:
             type: integer
+          example: '3'
         - name: sort
           in: query
           schema:
             type: string
+          example: desc
         - name: sortBy
           in: query
           schema:
             type: string
+          example: createdAt
       responses: {}
+      tags:
+        - Board members
       security:
         - BearerAuth: []
     parameters:
@@ -995,11 +1400,12 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
     post:
       summary: create board members
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1021,12 +1427,19 @@ paths:
                   type: string
                 committee:
                   type: string
-  /api/orgs/{COMPANY_ID}/board-members/{memberId}/update:
+            example:
+              firstName: Peter
+              lastName: Grace
+              email: caracolasstore+12@gmail.com
+              position: Chairman
+              category: Executive director
+              committee: Advisory
+  /api/orgs/{COMPANY_ID}/board-members/01KBQKJ3D3ABZH0DWCN4R1PKYK/update:
     patch:
       summary: update board members
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1035,22 +1448,23 @@ paths:
             schema:
               type: object
               properties:
-                firstName:
+                committee:
                   type: string
-                memberId:
-                  type: string
+            example:
+              committee: Board Chairman
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/board-members/{memberId}/delete:
     delete:
       summary: delete board member
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
     parameters:
@@ -1059,12 +1473,13 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/board-members/export:
     get:
       summary: export board members
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
     parameters:
@@ -1073,12 +1488,13 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/bulk:
     post:
       summary: bulk create board members
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1103,28 +1519,45 @@ paths:
                         type: string
                       category:
                         type: string
+            example:
+              members:
+                - first_name: Dan
+                  last_name: Drew
+                  email: caracolasstore+12@gmail.com
+                  position: HR Manager
+                  category: Exec
+                - first_name: Neo
+                  last_name: Leo
+                  email: caracolasstore+13@gmail.com
+                  position: YTD
+                  category: Exec
+                - first_name: Dew
+                  last_name: Dan
+                  email: caracolasstore+11@gmail.com
+                  position: TRR
+                  category: Exec
   /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/csv/parse:
     post:
       summary: parse csv
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/template:
     get:
       summary: download template
+      responses: {}
       tags:
         - Board members
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/{COMPANY_ID}/subscriptions:
     get:
       summary: fetch subscriptions
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
     parameters:
@@ -1133,21 +1566,24 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing:
     get:
       summary: fetch billings
-      tags:
-        - Billing and Subscription
       parameters:
         - name: limit
           in: query
           schema:
             type: integer
+          example: '4'
         - name: page
           in: query
           schema:
             type: integer
+          example: '1'
       responses: {}
+      tags:
+        - Billing and Subscription
       security:
         - BearerAuth: []
     parameters:
@@ -1156,20 +1592,21 @@ paths:
         required: true
         schema:
           type: string
-  /api/orgs/billing/invoices/01KBQNXC8APZHPBB0DX38SDG6B/download:
+        example: '{{COMPANY_ID}}'
+  /api/orgs/billing/invoices/01KBZ3X4MT9NXGK8XPZG44PCR3/download:
     get:
       summary: download invoice
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
   /api/orgs/{COMPANY_ID}/billing/cards:
     post:
       summary: Add card
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1183,18 +1620,22 @@ paths:
                 callbackUrl:
                   type: string
                   format: uri
+            example:
+              subscriptionId: 01KBZ406793TD6J80W17JKXWB0
+              callbackUrl: https://app.dgoval.com/card/callback
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/cancel:
     post:
       summary: cancel subscription
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1207,18 +1648,22 @@ paths:
                   type: string
                 reason:
                   type: string
+            example:
+              subscriptionId: 01KBNFQ21BZP8Z8P564KS38H6N
+              reason: Too expensive
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/cards/update:
     put:
       summary: update card
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1231,27 +1676,33 @@ paths:
                   type: string
                 paymentMethodId:
                   type: string
+            example:
+              subscriptionId: 01KBZ406793TD6J80W17JKXWB0
+              paymentMethodId: 01KBZ408WB1SGJ1T50GZ1FK08G
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/cards/verify-update:
     get:
       summary: verify update card
-      tags:
-        - Billing and Subscription
       parameters:
         - name: subscriptionId
           in: query
           schema:
             type: string
+          example: 01KBZ406793TD6J80W17JKXWB0
         - name: paymentMethodId
           in: query
           schema:
             type: string
+          example: ntck716xmn6oakc
       responses: {}
+      tags:
+        - Billing and Subscription
       security:
         - BearerAuth: []
     parameters:
@@ -1260,21 +1711,24 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/cards/verify-add:
     get:
       summary: verify add card
-      tags:
-        - Billing and Subscription
       parameters:
         - name: reference
           in: query
           schema:
             type: string
+          example: es0tpmix51
         - name: appUrl
           in: query
           schema:
             type: string
+          example: https://app.dgoval.com
       responses: {}
+      tags:
+        - Billing and Subscription
       security:
         - BearerAuth: []
     parameters:
@@ -1283,12 +1737,13 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/plan-change/initiate:
     post:
       summary: Upgrade plan
+      responses: {}
       tags:
         - Billing and Subscription
-      responses: {}
       security:
         - BearerAuth: []
       requestBody:
@@ -1306,31 +1761,39 @@ paths:
                 callbackUrl:
                   type: string
                   format: uri
+            example:
+              subscriptionId: 01KBNFQ21BZP8Z8P564KS38H6N
+              newPlanId: 01KBNFD2T7SG9GN54CM8YRZV5J
+              type: upgrade
+              callbackUrl: https://app.dgoval.com/upgrade/callback
     parameters:
       - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/billing/plan-change/confirm:
     get:
       summary: Confirm Upgrade
-      tags:
-        - Billing and Subscription
       parameters:
         - name: planChangeRequestId
           in: query
           schema:
             type: string
+          example: 01KBNG274MHJZ342S967TJNKEB
         - name: reference
           in: query
           schema:
             type: string
+          example: 1pfbhpw4ya
         - name: redirect
           in: query
           schema:
             type: string
       responses: {}
+      tags:
+        - Billing and Subscription
       security:
         - BearerAuth: []
     parameters:
@@ -1339,6 +1802,360 @@ paths:
         required: true
         schema:
           type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/frameworks/upload:
+    post:
+      summary: admin backoffice upload framework
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations:
+    post:
+      summary: create evaluation
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                startDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+                frameworkIds:
+                  type: array
+                  items:
+                    type: string
+            example:
+              title: Q4 Evaluation
+              description: Evaluation for Q4
+              startDate: '2025-11-15'
+              endDate: '2025-12-18'
+              frameworkIds:
+                - 01KCA5JYE8WX27V22Y3RQ3A5RP
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+    get:
+      summary: list evaluations
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '5'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: Q4
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+  /api/evaluations/{evaluationId}/dashboard:
+    get:
+      summary: evaluation dashboard
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/approval/decide:
+    post:
+      summary: approve evaluation
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvalId:
+                  type: string
+                accept:
+                  type: boolean
+                reason:
+                  type: string
+            example:
+              approvalId: 01KBJ7JYBSYKP7CHMGZXNGY95G
+              accept: true
+              reason: Well done
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/frameworks:
+    get:
+      summary: list frameworks
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/01KBJ7Q39YAXV9GAMJ0EPGJM08/evaluations/documents:
+    get:
+      summary: List document requests for evaluation
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '20'
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: not_submitted
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/evaluations/documents/request:
+    post:
+      summary: Request document
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                evaluationId:
+                  type: string
+                publicUrl:
+                  type: string
+                  format: uri
+                title:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      templateId:
+                        type: string
+                      title:
+                        type: string
+                      description:
+                        type: string
+                providers:
+                  type: object
+                  properties:
+                    providerType:
+                      type: string
+                    membershipId:
+                      type: string
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+            example:
+              evaluationId: 01KBJ7Q39YAXV9GAMJ0EPGJM08
+              publicUrl: https://app.dgoval.com
+              title: Annual Performance Review Q4 2025
+              items:
+                - templateId: 01KBDKNWPW0G9D8GZ2ZY1APJ8T
+                  title: Audit Findings Summary for Corporate Governance
+                  description: Findings summary template
+                - templateId: 01KBDKNXB612Q0WBN8C39JFMNF
+                  title: Board Member Directory
+                  description: Board member names, roles and contact details
+                - templateId: 01KBDKNVCA19CCYHZAH5VA85BF
+                  title: Board Performance Evaluation Report
+                  description: Template for board performance evaluation report
+                - templateId: 01KBDKNZ6A5ARSD8108G5MN7N9
+                  title: Corporate Governance Compliance Standards Review
+                  description: Standards reference and compliance mapping
+              providers:
+                providerType: team
+                membershipId: 01KB7H5MS3BV54K7JE427JBP7C
+                firstName: Porro
+                lastName: Colas
+                email: caracolasstore+6@gmail.com
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/documents/backoffice/templates:
+    get:
+      summary: list document templates
+      responses: {}
+      tags:
+        - Evaluation Documents
+  /api/orgs/evaluations/respondent/documents/requests:
+    get:
+      summary: List requested documents for respondents
+      parameters:
+        - name: token
+          in: query
+          schema:
+            type: string
+          example: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
+      responses: {}
+      tags:
+        - Evaluation Documents
+  /api/respond/documents/661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d/upload:
+    post:
+      summary: Upload document by respondent
+      responses: {}
+      tags:
+        - Evaluation Documents
+  /api/respond/documents/submit:
+    post:
+      summary: Submit documents
+      responses: {}
+      tags:
+        - Evaluation Documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+            example:
+              token: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
+  /api/orgs/documents/01KBE74ZD34QPN95Z6M0HWB4RE/request-item:
+    delete:
+      summary: Delete uploaded document
+      responses: {}
+      tags:
+        - Evaluation Documents
+  /api/orgs/documents/01KBFN2F0Z79K1EW2AQVFG2XKP/document/uploads:
+    get:
+      summary: View document
+      responses: {}
+      tags:
+        - Evaluation Documents
+  /api/orgs/{COMPANY_ID}/documents/uploads/review:
+    post:
+      summary: Review (Accept) Document
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accept:
+                  type: boolean
+                uploadId:
+                  type: string
+            example:
+              accept: true
+              uploadId: 01KBJ9V906TF9NX9PQ91TJ12GH
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/documents/manual/templates:
+    post:
+      summary: Manua Add Document Template
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                documents:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+            example:
+              documents:
+                - title: New Document manually V1
+                - title: New Document manually V2
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
 components:
   securitySchemes:
     BearerAuth:
