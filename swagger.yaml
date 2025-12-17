@@ -1944,7 +1944,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/01KBJ7Q39YAXV9GAMJ0EPGJM08/evaluations/documents:
+  /api/orgs/{{evaluationId}}/evaluations/documents:
     get:
       summary: List document requests for evaluation
       parameters:
@@ -2062,7 +2062,7 @@ paths:
       responses: {}
       tags:
         - Evaluation Documents
-  /api/respond/documents/661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d/upload:
+  /api/respond/documents/{{token}}/upload:
     post:
       summary: Upload document by respondent
       responses: {}
@@ -2084,13 +2084,13 @@ paths:
                   type: string
             example:
               token: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
-  /api/orgs/documents/01KBE74ZD34QPN95Z6M0HWB4RE/request-item:
+  /api/orgs/documents/{{requestItemId}}/request-item:
     delete:
       summary: Delete uploaded document
       responses: {}
       tags:
         - Evaluation Documents
-  /api/orgs/documents/01KBFN2F0Z79K1EW2AQVFG2XKP/document/uploads:
+  /api/orgs/documents/{{uploadId}}/document/uploads:
     get:
       summary: View document
       responses: {}
