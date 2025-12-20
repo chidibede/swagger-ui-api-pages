@@ -180,6 +180,7 @@ paths:
             example: |-
               {
                   "email": "caracolasstore@gmail.com",
+                  // "email": "caracolasstore+8@gmail.com",
                   // "password": "Password@weq112"
                   "password": "John@weq112"
                   // "password": "KtQhrb@W&w&a"
@@ -975,11 +976,11 @@ paths:
             example:
               logoUrl: >-
                 https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg
-              name: Access Trust bank
+              name: Bede Fintech
               category: Public
               industry: Banking
               address: Festac
-              userId: 01KB61XYMR3R2HNKVJRJMG1BZD
+              userId: 01KB7H5MS3BV54K7JE427JBP7C
     get:
       summary: list companies for user
       responses: {}
@@ -1079,8 +1080,8 @@ paths:
                 newPassword:
                   type: string
             example:
-              email: caracolasstore+6@gmail.com
-              currentPassword: KtQhrb@W&w&a
+              email: caracolasstore+8@gmail.com
+              currentPassword: 2CxWqtK3P5rr
               newPassword: Password@weq112
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites/resend:
     post:
@@ -1127,7 +1128,7 @@ paths:
                 userId:
                   type: string
             example:
-              userId: 01KB7K5RRYC6XM6YAB5Q6ZXA28
+              userId: 01KAGFAZGVB3133TFF9S6XARZR
     parameters:
       - name: COMPANY_ID
         in: path
@@ -1135,7 +1136,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members/reactivate:
+  /api/orgs/{COMPANY_ID}/members/reactivate:
     post:
       summary: reactivate user
       responses: {}
@@ -1157,6 +1158,13 @@ paths:
             example:
               userId: 01KAGFAZGVB3133TFF9S6XARZR
               loginUrl: https://app.dgoval.com/login
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/invites/template:
     get:
       summary: Download csv template
@@ -1249,7 +1257,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/team:
+  /api/orgs/{COMPANY_ID}/team:
     get:
       summary: list members
       parameters:
@@ -1273,6 +1281,13 @@ paths:
         - Team invite
       security:
         - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/members/csv/export:
     get:
       summary: export team members
@@ -1288,7 +1303,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/{{COMPANY_ID}}/members/01KB7H5MS3BV54K7JE427JBP7C/delete:
+  /api/orgs/{COMPANY_ID}/members/01KB7H5MS3BV54K7JE427JBP7C/delete:
     delete:
       summary: delete member
       responses: {}
@@ -1296,6 +1311,13 @@ paths:
         - Team invite
       security:
         - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/logo:
     delete:
       summary: delete logo
@@ -1536,7 +1558,7 @@ paths:
                   email: caracolasstore+11@gmail.com
                   position: TRR
                   category: Exec
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/csv/parse:
+  /api/orgs/{COMPANY_ID}/board-members/csv/parse:
     post:
       summary: parse csv
       responses: {}
@@ -1544,7 +1566,14 @@ paths:
         - Board members
       security:
         - BearerAuth: []
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/template:
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/board-members/template:
     get:
       summary: download template
       responses: {}
@@ -1552,6 +1581,13 @@ paths:
         - Board members
       security:
         - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/subscriptions:
     get:
       summary: fetch subscriptions
@@ -1883,7 +1919,7 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
-  /api/evaluations/{evaluationId}/dashboard:
+  /api/evaluations/01KCA5Q456STYK3VTX4BG45PA5/dashboard:
     get:
       summary: evaluation dashboard
       responses: {}
@@ -1891,13 +1927,6 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
-    parameters:
-      - name: evaluationId
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{evaluationId}}'
   /api/orgs/{COMPANY_ID}/evaluations/approval/decide:
     post:
       summary: approve evaluation
@@ -1944,7 +1973,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/{{evaluationId}}/evaluations/documents:
+  /api/orgs/{evaluationId}/evaluations/documents:
     get:
       summary: List document requests for evaluation
       parameters:
@@ -1968,6 +1997,13 @@ paths:
         - Evaluation Documents
       security:
         - BearerAuth: []
+    parameters:
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
   /api/orgs/{COMPANY_ID}/evaluations/documents/request:
     post:
       summary: Request document
@@ -2062,12 +2098,19 @@ paths:
       responses: {}
       tags:
         - Evaluation Documents
-  /api/respond/documents/{{token}}/upload:
+  /api/respond/documents/{token}/upload:
     post:
       summary: Upload document by respondent
       responses: {}
       tags:
         - Evaluation Documents
+    parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{token}}'
   /api/respond/documents/submit:
     post:
       summary: Submit documents
@@ -2084,18 +2127,32 @@ paths:
                   type: string
             example:
               token: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
-  /api/orgs/documents/{{requestItemId}}/request-item:
+  /api/orgs/documents/{requestItemId}/request-item:
     delete:
       summary: Delete uploaded document
       responses: {}
       tags:
         - Evaluation Documents
-  /api/orgs/documents/{{uploadId}}/document/uploads:
+    parameters:
+      - name: requestItemId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{requestItemId}}'
+  /api/orgs/documents/{uploadId}/document/uploads:
     get:
       summary: View document
       responses: {}
       tags:
         - Evaluation Documents
+    parameters:
+      - name: uploadId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{uploadId}}'
   /api/orgs/{COMPANY_ID}/documents/uploads/review:
     post:
       summary: Review (Accept) Document
@@ -2149,6 +2206,819 @@ paths:
               documents:
                 - title: New Document manually V1
                 - title: New Document manually V2
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/desk-review/start:
+    post:
+      summary: Start Desk Review
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                evaluationId:
+                  type: string
+            example:
+              evaluationId: 01KBCTP885JSAPQ0RPDNE6C7PR
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews/answers:
+    put:
+      summary: Save answer
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deskReviewId:
+                  type: string
+                frameworkId:
+                  type: string
+                sectionId:
+                  type: string
+                questionId:
+                  type: string
+                answer:
+                  type: string
+                comment:
+                  type: string
+            example:
+              deskReviewId: 01KBHZXPV3G86SVTT5ZC237EPS
+              frameworkId: 01KBGNWP61ZCZ45YRGAX4C1995
+              sectionId: 01KBGNWPAJYT2JA65GVHGCBDRY
+              questionId: 01KBGNWNAV8B12V5MNJTNNXRKV
+              answer: 'yes'
+              comment: Board has a minimum of two directors and records confirm this
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews/submit:
+    post:
+      summary: submit desk review
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deskReviewId:
+                  type: string
+                reviewLink:
+                  type: string
+                  format: uri
+            example:
+              deskReviewId: 01KBJBAN6Q1DEM2SYYWJWCKJ4W
+              reviewLink: https://app.dgoval.com/evaluation/deskreview
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews/evidence:
+    post:
+      summary: upload evidence
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews:
+    get:
+      summary: Get Desk review
+      parameters:
+        - name: evaluationId
+          in: query
+          schema:
+            type: string
+          example: 01KBCTP885JSAPQ0RPDNE6C7PR
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                evaluationId:
+                  type: string
+            example:
+              evaluationId: 01KBCTP885JSAPQ0RPDNE6C7PR
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews/approve:
+    post:
+      summary: Approve review
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deskReviewId:
+                  type: string
+            example:
+              deskReviewId: 01KBJBAN6Q1DEM2SYYWJWCKJ4W
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/desk-reviews/reject:
+    post:
+      summary: Reject review
+      responses: {}
+      tags:
+        - Desk Review
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deskReviewId:
+                  type: string
+                reason:
+                  type: string
+            example:
+              deskReviewId: 01KBJBAN6Q1DEM2SYYWJWCKJ4W
+              reason: Rubbish
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/metadata:
+    post:
+      summary: Save Evaluation survey metadata
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  format: style
+                description:
+                  type: string
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+                evaluationId:
+                  type: string
+            example:
+              title: 'Board Evaluation: 2025 Annual'
+              description: Annual performance evaluation for board members
+              startDate: '2025-12-15T00:00:00.000Z'
+              endDate: '2025-12-20T23:59:59.999Z'
+              evaluationId: 01KBCTP885JSAPQ0RPDNE6C7PR
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{surveyId}/metadata:
+    put:
+      summary: Update survey metadata
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  format: style
+                description:
+                  type: string
+            example:
+              title: 'Board Evaluation: 2025 Annual V2'
+              description: Annual performance evaluation for board members
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: surveyId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{surveyId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{surveyId}/questions:
+    put:
+      summary: update survey questions
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      skippable:
+                        type: boolean
+                      helpText:
+                        type: string
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
+            example:
+              questions:
+                - id: 01KC1X24EV2CHVDESHF43NAWP9
+                  position: 1
+                  text: >-
+                    What is your overall rating of the board's effectiveness
+                    this year?
+                  type: likert
+                  skippable: false
+                  helpText: 1 = Very Poor, 5 = Excellent
+                  likert:
+                    scaleMinLabel: Very Poor
+                    scaleMaxLabel: Excellent
+                    scalePoints: 5
+                - id: 01KC1X24JGVGB5VC3SB3BCDZKH
+                  position: 2
+                  text: Has the board provided clear strategic direction?
+                  type: singleChoice
+                  skippable: false
+                  helpText: Select the option that best reflects your view
+                  options:
+                    - position: 1
+                      label: Strongly disagree
+                      value: strongly_disagree
+                      isDefault: false
+                    - position: 2
+                      label: Disagree
+                      value: disagree
+                      isDefault: false
+                    - position: 3
+                      label: Neutral
+                      value: neutral
+                      isDefault: false
+                    - position: 4
+                      label: Agree
+                      value: agree
+                      isDefault: false
+                    - position: 5
+                      label: Strongly agree
+                      value: strongly_agree
+                      isDefault: false
+                  likert: null
+                - id: 01KC1X24P67Y5Z4HDZCPTJ0WGH
+                  position: 3
+                  text: Please provide any additional comments (optional)
+                  type: longText
+                  skippable: true
+                  helpText: You may leave this blank if you have no further comments
+                  options: null
+                  likert: null
+                - id: null
+                  position: 4
+                  text: Do you feel the board meetings are productive?
+                  type: yesNo
+                  skippable: false
+                  helpText: null
+                  options: null
+                  likert: null
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: surveyId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{surveyId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/draft/autosave:
+    post:
+      summary: Auto save evaluation survey
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                draftId:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      required:
+                        type: boolean
+                      skippable:
+                        type: boolean
+                      helpText:
+                        type: string
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
+            example:
+              draftId: 01KC0472HK29DS3C9SQEVR4EKS
+              questions:
+                - id: 01KBR50ENHS4JMTRCYKMV7EWS2
+                  position: 1
+                  text: How clear are the team's goals?
+                  type: likert
+                  required: true
+                  skippable: false
+                  helpText: 1 = Strongly disagree, 5 = Strongly agree
+                  likert:
+                    scaleMinLabel: Strongly disagree
+                    scaleMaxLabel: Strongly agree
+                    scalePoints: 5
+                - id: 01KBR50FBHHM66P8C02H2Q7DQ9
+                  position: 2
+                  text: Which leadership areas need improvement?
+                  type: longText
+                  required: false
+                  skippable: true
+                  helpText: Add as much detail as possible
+                  likert: null
+                - id: 01KBR50FNQSCK81G5CKJC984T5
+                  position: 3
+                  text: State your department
+                  type: shortText
+                  required: true
+                  skippable: false
+                  helpText: Keep it short
+                  likert: null
+                - id: 01KBR50G06M5BNW06C9X7F27CP
+                  position: 4
+                  text: Do you receive clear direction from leadership?
+                  type: yesNo
+                  required: true
+                  skippable: false
+                  helpText: null
+                  likert: null
+                - id: 01KBR50GA9V8A6ERX3G838GCK9
+                  position: 5
+                  text: Rate the effectiveness of leadership communication
+                  type: singleChoice
+                  required: true
+                  skippable: false
+                  helpText: null
+                  options:
+                    - position: 1
+                      label: Poor
+                      value: poor
+                      isDefault: false
+                    - position: 2
+                      label: Fair
+                      value: fair
+                      isDefault: false
+                    - position: 3
+                      label: Good
+                      value: good
+                      isDefault: true
+                    - position: 4
+                      label: Excellent
+                      value: excellent
+                      isDefault: false
+                  likert: null
+                - id: 01KBR50H04QYD4A23NDEYZEM7X
+                  position: 6
+                  text: Select the tools you use weekly
+                  type: multipleChoice
+                  required: false
+                  skippable: true
+                  helpText: Choose all that apply
+                  options:
+                    - position: 1
+                      label: Slack
+                      value: slack
+                      isDefault: false
+                    - position: 2
+                      label: Teams
+                      value: teams
+                      isDefault: false
+                    - position: 3
+                      label: Zoom
+                      value: zoom
+                      isDefault: false
+                    - position: 4
+                      label: Email
+                      value: email
+                      isDefault: false
+                  likert: null
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/draft/publish:
+    post:
+      summary: Publish survey template
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                draftId:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      position:
+                        type: integer
+                      text:
+                        type: string
+                      type:
+                        type: string
+                      skippable:
+                        type: boolean
+                      likert:
+                        type: object
+                        properties:
+                          scaleMinLabel:
+                            type: string
+                          scaleMaxLabel:
+                            type: string
+                          scalePoints:
+                            type: integer
+            example:
+              draftId: 01KC1X0T7YPRJ5VRSZ05NTQ7TQ
+              questions:
+                - position: 1
+                  text: What is your overall rating of the board's effectiveness?
+                  type: likert
+                  skippable: false
+                  likert:
+                    scaleMinLabel: Very Poor
+                    scaleMaxLabel: Excellent
+                    scalePoints: 5
+                - position: 2
+                  text: Has the board provided clear strategic direction?
+                  type: singleChoice
+                  skippable: false
+                  options:
+                    - position: 1
+                      label: Strongly disagree
+                      value: strongly_disagree
+                    - position: 2
+                      label: Disagree
+                      value: disagree
+                    - position: 3
+                      label: Neutral
+                      value: neutral
+                    - position: 4
+                      label: Agree
+                      value: agree
+                    - position: 5
+                      label: Strongly agree
+                      value: strongly_agree
+                - position: 3
+                  text: Please provide any additional comments (optional)
+                  type: longText
+                  skippable: true
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/{surveyId}/surveys/view:
+    get:
+      summary: get evaluation survey
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: surveyId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{surveyId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/surveys:
+    get:
+      summary: List evaluation surveys
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/send:
+    post:
+      summary: send survey to receipients
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                surveyId:
+                  type: string
+                surveyAssessmentLink:
+                  type: string
+                  format: uri
+                recipients:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+            example:
+              surveyId: 01KC1X0T7WDGW0ZNKZANJTCJKZ
+              surveyAssessmentLink: https://app.dgoval.com/survey/respond
+              recipients:
+                - id: 01KBQKG9TR7DYHJ67XY0TH8DYV
+                  email: caracolasstore+10@gmail.com
+                - id: 01KBQKHAAB3Q2TWAAT5X5YG7KP
+                  email: caracolasstore+11@gmail.com
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{surveyId}/remind:
+    post:
+      summary: Send reminders
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                surveyAssessmentLink:
+                  type: string
+                  format: uri
+                participantIds:
+                  type: array
+                  items:
+                    type: string
+            example:
+              surveyAssessmentLink: https://app.dgoval.com/survey/respond
+              participantIds:
+                - 01KBQKG9TR7DYHJ67XY0TH8DYV
+                - 01KBQKHAAB3Q2TWAAT5X5YG7KP
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: surveyId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{surveyId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{templateId}/template:
+    get:
+      summary: Create Survey From  template Get Started endpoint
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: templateId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{templateId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{token}/respondent:
+    get:
+      summary: Get survey for respondent
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{token}}'
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/respondent/answers:
+    put:
+      summary: Respondent auto save answers
+      responses: {}
+      tags:
+        - Evaluation Surveys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                answersPayload:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      questionId:
+                        type: string
+                      answer:
+                        type: string
+                        format: utc-millisec
+                      comment:
+                        type: string
+                submit:
+                  type: boolean
+            example:
+              token: 8baafb6fb7ca006aa6099cb808a3a82ff458a87cd8102998
+              answersPayload:
+                - questionId: 01KC1X24EV2CHVDESHF43NAWP9
+                  answer: '4'
+                  comment: Board is generally effective but can still improve.
+                - questionId: 01KC1X24JGVGB5VC3SB3BCDZKH
+                  answer: agree
+                  comment: Strategic direction is mostly clear.
+                - questionId: 01KC1X24P67Y5Z4HDZCPTJ0WGH
+                  answer: No further comments at this time.
+                  comment: null
+              submit: false
     parameters:
       - name: COMPANY_ID
         in: path
