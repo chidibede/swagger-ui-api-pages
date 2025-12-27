@@ -1470,10 +1470,10 @@ paths:
             schema:
               type: object
               properties:
-                committee:
+                committewe:
                   type: string
             example:
-              committee: Board Chairman
+              committewe: Board Chairman
     parameters:
       - name: COMPANY_ID
         in: path
@@ -1958,7 +1958,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/{COMPANY_ID}/frameworks:
+  /api/backoffice/frameworks:
     get:
       summary: list frameworks
       responses: {}
@@ -1966,13 +1966,6 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
-    parameters:
-      - name: COMPANY_ID
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{COMPANY_ID}}'
   /api/orgs/{evaluationId}/evaluations/documents:
     get:
       summary: List document requests for evaluation
@@ -3026,6 +3019,172 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/interviews:
+    get:
+      summary: List stakeholder interviews
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '5'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: audit
+      responses: {}
+      tags:
+        - Stakeholders interview
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
+    post:
+      summary: Create stakeholder interview schedule
+      responses: {}
+      tags:
+        - Stakeholders interview
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                boardMemberId:
+                  type: string
+                scheduledDate:
+                  type: string
+                  format: date
+                scheduledTime:
+                  type: string
+                  format: time
+                type:
+                  type: string
+                channel:
+                  type: string
+                description:
+                  type: string
+            example:
+              title: Audit Chair Stakeholder Interview
+              boardMemberId: 01KBWATFMM5RCAQS74KE0BPSRW
+              scheduledDate: '2026-12-29'
+              scheduledTime: '11:00:00'
+              type: online
+              channel: Zoom
+              description: Initial stakeholder engagement interview with the audit chair.
+  /api/orgs/{COMPANY_ID}/interviews/{interviewId}/view:
+    get:
+      summary: Get interview details
+      responses: {}
+      tags:
+        - Stakeholders interview
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: interviewId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{interviewId}}'
+  /api/orgs/{COMPANY_ID}/interviews/{interviewId}/update:
+    put:
+      summary: Update stakeholder interview metadata
+      responses: {}
+      tags:
+        - Stakeholders interview
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                scheduledTime:
+                  type: string
+                  format: style
+                description:
+                  type: string
+            example:
+              title: Board Chair Stakeholder Interview
+              scheduledTime: '15:00'
+              description: Initial stakeholder engagement interview with the board chair.
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: interviewId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{interviewId}}'
+  /api/orgs/{COMPANY_ID}/interviews/{interviewId}/save-summary:
+    put:
+      summary: Save summary
+      responses: {}
+      tags:
+        - Stakeholders interview
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                summary:
+                  type: string
+            example:
+              summary: >-
+                I had a call with Timo, Board chairman and the compliance score
+                matched what was expected
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: interviewId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{interviewId}}'
 components:
   securitySchemes:
     BearerAuth:
