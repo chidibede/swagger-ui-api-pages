@@ -339,8 +339,8 @@ paths:
                   type: string
             example:
               paymentStatus: succeeded
-              providerTxReference: fek7boe7on
-              paymentId: 01KBZ3X4MT9NXGK8XPZG44PCR3
+              providerTxReference: 5oyj1wmc6v
+              paymentId: 01KDRC19CKQXW1403RSAVHSKQW
   /api/payment/plans:
     get:
       summary: Fetch payment plans
@@ -371,9 +371,9 @@ paths:
                   type: string
                   format: uri
             example:
-              planId: 01KBZ0AZ36JX8Y19ZMA11A9NXQ
-              companyId: 01KB624SH9AJAJSCH57P0ZMTNA
-              userId: 01KB61XYMR3R2HNKVJRJMG1BZD
+              planId: 01KBNYMEG5PXRYGFEMBCNRP0QV
+              companyId: 01KAS36HYKRTFFPK1WRZYY9QH2
+              userId: 01K9DA2VPGX2353AXSTQ93C6QY
               provider: Paystack
               callbackUrl: https://app.dgoval.com/payments/callback
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/metadata:
@@ -976,11 +976,11 @@ paths:
             example:
               logoUrl: >-
                 https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg
-              name: Bede Fintech
+              name: Grace Tech
               category: Public
-              industry: Banking
-              address: Festac
-              userId: 01KB7H5MS3BV54K7JE427JBP7C
+              industry: Trading
+              address: Abuja
+              userId: 01K9DA2VPGX2353AXSTQ93C6QY
     get:
       summary: list companies for user
       responses: {}
@@ -1012,7 +1012,7 @@ paths:
               category: Public
               industry: Banking
               address: Festac
-  /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites:
+  /api/orgs/{COMPANY_ID}/invites:
     post:
       summary: Create Invite
       responses: {}
@@ -1039,11 +1039,18 @@ paths:
                   type: string
                   format: uri
             example:
-              email: caracolasstore+8@gmail.com
-              role: evaluator
-              firstName: John
-              lastName: Colas
+              email: caracolasstore+9@gmail.com
+              role: evaluation_manager
+              firstName: Gary
+              lastName: Neville
               loginUrl: https://app.dgoval.com/login
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/members:
     put:
       summary: update member
@@ -1080,8 +1087,8 @@ paths:
                 newPassword:
                   type: string
             example:
-              email: caracolasstore+8@gmail.com
-              currentPassword: 2CxWqtK3P5rr
+              email: caracolasstore+9@gmail.com
+              currentPassword: '#oYCHS*52Z3S'
               newPassword: Password@weq112
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/invites/resend:
     post:
@@ -1318,6 +1325,50 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
+  /api/invites/pending:
+    get:
+      summary: Fetch pending invites for me
+      responses: {}
+      tags:
+        - Team invite
+      security:
+        - BearerAuth: []
+  /api/invites/accept:
+    post:
+      summary: Accept invite
+      responses: {}
+      tags:
+        - Team invite
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invitationId:
+                  type: string
+            example:
+              invitationId: 01KEW878N408BAT3CFFYDH6FYN
+  /api/invites/reject:
+    post:
+      summary: Reject invite
+      responses: {}
+      tags:
+        - Team invite
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invitationId:
+                  type: string
+            example:
+              invitationId: 01KEW878N408BAT3CFFYDH6FYN
   /api/orgs/01K9DA5HM0406JZ1PP322VA1M8/logo:
     delete:
       summary: delete logo
@@ -1511,7 +1562,7 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/01K9DHNRHY9CBXGTASXZH8B3AV/board-members/bulk:
+  /api/orgs/{COMPANY_ID}/board-members/bulk:
     post:
       summary: bulk create board members
       responses: {}
@@ -1558,6 +1609,13 @@ paths:
                   email: caracolasstore+11@gmail.com
                   position: TRR
                   category: Exec
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/board-members/csv/parse:
     post:
       summary: parse csv
@@ -1883,12 +1941,13 @@ paths:
                   items:
                     type: string
             example:
-              title: Q4 Evaluation
-              description: Evaluation for Q4
-              startDate: '2025-11-15'
-              endDate: '2025-12-18'
+              title: QA Evaluation
+              description: Evaluation for QA
+              startDate: '2025-12-31'
+              endDate: '2026-01-18'
               frameworkIds:
-                - 01KCA5JYE8WX27V22Y3RQ3A5RP
+                - 01KE6PCKEFA440KGJAS4D4ZBRQ
+                - 01KE6PG5PVXNY873ZXTGXBQNKW
     parameters:
       - name: COMPANY_ID
         in: path
@@ -1899,27 +1958,23 @@ paths:
     get:
       summary: list evaluations
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-          example: '5'
         - name: page
           in: query
           schema:
             type: integer
           example: '1'
-        - name: search
+        - name: limit
           in: query
-          schema:
-            type: string
-          example: Q4
+          required: false
+          deprecated: false
+          schema: {}
+          example: '10'
       responses: {}
       tags:
         - Evaluations
       security:
         - BearerAuth: []
-  /api/evaluations/01KCA5Q456STYK3VTX4BG45PA5/dashboard:
+  /api/evaluations/{evaluationId}/dashboard:
     get:
       summary: evaluation dashboard
       responses: {}
@@ -1927,6 +1982,13 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
+    parameters:
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
   /api/orgs/{COMPANY_ID}/evaluations/approval/decide:
     post:
       summary: approve evaluation
@@ -2044,22 +2106,19 @@ paths:
                       type: string
                       format: email
             example:
-              evaluationId: 01KBJ7Q39YAXV9GAMJ0EPGJM08
+              evaluationId: 01KE1WE7C4WBXY1C0SHVW9TX90
               publicUrl: https://app.dgoval.com
               title: Annual Performance Review Q4 2025
               items:
-                - templateId: 01KBDKNWPW0G9D8GZ2ZY1APJ8T
+                - templateId: 01KBNYSVJC655WMQ25QY1EG47E
                   title: Audit Findings Summary for Corporate Governance
-                  description: Findings summary template
-                - templateId: 01KBDKNXB612Q0WBN8C39JFMNF
+                  description: Findings summary templatee
+                - templateId: 01KBNYSW0PZYVQTQ32478D7Y4Z
                   title: Board Member Directory
                   description: Board member names, roles and contact details
-                - templateId: 01KBDKNVCA19CCYHZAH5VA85BF
+                - templateId: 01KBNYSTNG3943VKQVHGQJK04V
                   title: Board Performance Evaluation Report
                   description: Template for board performance evaluation report
-                - templateId: 01KBDKNZ6A5ARSD8108G5MN7N9
-                  title: Corporate Governance Compliance Standards Review
-                  description: Standards reference and compliance mapping
               providers:
                 providerType: team
                 membershipId: 01KB7H5MS3BV54K7JE427JBP7C
@@ -2087,7 +2146,7 @@ paths:
           in: query
           schema:
             type: string
-          example: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
+          example: e65ce02fb1cd9daf2525bbb62a93934ab2c183c72d753d90604f5dea91a9a966
       responses: {}
       tags:
         - Evaluation Documents
@@ -2119,7 +2178,7 @@ paths:
                 token:
                   type: string
             example:
-              token: 661e04a265dc568caa4fdbc0c75fe2ac5ed1af8c70c8702cbcb3485d2756a05d
+              token: b38a25dd8064ad4ed54eeb9b2396e10263d325a253fe0f8f389c93889c6517b4
   /api/orgs/documents/{requestItemId}/request-item:
     delete:
       summary: Delete uploaded document
@@ -2166,7 +2225,7 @@ paths:
                   type: string
             example:
               accept: true
-              uploadId: 01KBJ9V906TF9NX9PQ91TJ12GH
+              uploadId: 01KEKTHXYDP10FTXYBTJQJ864A
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2206,6 +2265,47 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
+  /api/orgs/evaluations/documents/{documentRequestItemId}/item:
+    delete:
+      summary: Remove requested document
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: documentRequestItemId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{documentRequestItemId}}'
+  /api/orgs/{COMPANY_ID}/documents/upload-on-behalf:
+    post:
+      summary: upload on behalf
+      parameters:
+        - name: providerId
+          in: query
+          schema:
+            type: string
+          example: 01KE1WSCYWFCW25RVPJ6Z1M6GW
+        - name: documentRequestItemId
+          in: query
+          schema:
+            type: string
+          example: 01KE1WSCYRKT8QH6PQP4JHHFZR
+      responses: {}
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/evaluations/desk-review/start:
     post:
       summary: Start Desk Review
@@ -2223,7 +2323,7 @@ paths:
                 evaluationId:
                   type: string
             example:
-              evaluationId: 01KBCTP885JSAPQ0RPDNE6C7PR
+              evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2258,12 +2358,14 @@ paths:
                 comment:
                   type: string
             example:
-              deskReviewId: 01KBHZXPV3G86SVTT5ZC237EPS
-              frameworkId: 01KBGNWP61ZCZ45YRGAX4C1995
-              sectionId: 01KBGNWPAJYT2JA65GVHGCBDRY
-              questionId: 01KBGNWNAV8B12V5MNJTNNXRKV
+              deskReviewId: 01KEKTQ9J1BTYRJR8GQHZ5M1ZG
+              frameworkId: 01KE6PCKEFA440KGJAS4D4ZBRQ
+              sectionId: 01KE6PCKGCFSSF8Z6N72GAQ3ZT
+              questionId: 01KE6PCKC5AH125ANJT9A3TJN0
               answer: 'yes'
-              comment: Board has a minimum of two directors and records confirm this
+              comment: >-
+                Interlocking directorships comply with approved limits within
+                the group
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2291,7 +2393,7 @@ paths:
                   type: string
                   format: uri
             example:
-              deskReviewId: 01KBJBAN6Q1DEM2SYYWJWCKJ4W
+              deskReviewId: 01KEKTQ9J1BTYRJR8GQHZ5M1ZG
               reviewLink: https://app.dgoval.com/evaluation/deskreview
     parameters:
       - name: COMPANY_ID
@@ -2323,7 +2425,7 @@ paths:
           in: query
           schema:
             type: string
-          example: 01KBCTP885JSAPQ0RPDNE6C7PR
+          example: '{{evaluationId}}'
       responses: {}
       tags:
         - Desk Review
@@ -2363,7 +2465,7 @@ paths:
                 deskReviewId:
                   type: string
             example:
-              deskReviewId: 01KBJBAN6Q1DEM2SYYWJWCKJ4W
+              deskReviewId: 01KEKTQ9J1BTYRJR8GQHZ5M1ZG
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2427,11 +2529,11 @@ paths:
                 evaluationId:
                   type: string
             example:
-              title: 'Board Evaluation: 2025 Annual'
+              title: 'Board Evaluation: 2025 Annual End'
               description: Annual performance evaluation for board members
-              startDate: '2025-12-15T00:00:00.000Z'
-              endDate: '2025-12-20T23:59:59.999Z'
-              evaluationId: 01KBCTP885JSAPQ0RPDNE6C7PR
+              startDate: '2025-12-31T00:00:00.000Z'
+              endDate: '2026-01-20T23:59:59.999Z'
+              evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2630,7 +2732,7 @@ paths:
                           scalePoints:
                             type: integer
             example:
-              draftId: 01KC0472HK29DS3C9SQEVR4EKS
+              draftId: 01KDSWDMVTVZN3W3H6MJ8N6AS6
               questions:
                 - id: 01KBR50ENHS4JMTRCYKMV7EWS2
                   position: 1
@@ -2763,7 +2865,7 @@ paths:
                           scalePoints:
                             type: integer
             example:
-              draftId: 01KC1X0T7YPRJ5VRSZ05NTQ7TQ
+              draftId: 01KEKYWZ0XSQCZ2EXVS2FFQ6RS
               questions:
                 - position: 1
                   text: What is your overall rating of the board's effectiveness?
@@ -2876,13 +2978,11 @@ paths:
                         type: string
                         format: email
             example:
-              surveyId: 01KC1X0T7WDGW0ZNKZANJTCJKZ
+              surveyId: 01KEKYWZ0XSQCZ2EXVS2FFQ6RR
               surveyAssessmentLink: https://app.dgoval.com/survey/respond
               recipients:
                 - id: 01KBQKG9TR7DYHJ67XY0TH8DYV
                   email: caracolasstore+10@gmail.com
-                - id: 01KBQKHAAB3Q2TWAAT5X5YG7KP
-                  email: caracolasstore+11@gmail.com
     parameters:
       - name: COMPANY_ID
         in: path
@@ -2950,7 +3050,7 @@ paths:
         schema:
           type: string
         example: '{{templateId}}'
-  /api/orgs/{COMPANY_ID}/evaluations/surveys/{token}/respondent:
+  /api/orgs/evaluations/surveys/{token}/respondent:
     get:
       summary: Get survey for respondent
       responses: {}
@@ -2959,19 +3059,13 @@ paths:
       security:
         - BearerAuth: []
     parameters:
-      - name: COMPANY_ID
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{COMPANY_ID}}'
       - name: token
         in: path
         required: true
         schema:
           type: string
         example: '{{token}}'
-  /api/orgs/{COMPANY_ID}/evaluations/surveys/respondent/answers:
+  /api/orgs/evaluations/surveys/respondent/answers:
     put:
       summary: Respondent auto save answers
       responses: {}
@@ -3000,25 +3094,18 @@ paths:
                 submit:
                   type: boolean
             example:
-              token: 8baafb6fb7ca006aa6099cb808a3a82ff458a87cd8102998
+              token: 512bef37380cfc1ef935a983e803ce5a80ffd4f23e369405
               answersPayload:
-                - questionId: 01KC1X24EV2CHVDESHF43NAWP9
+                - questionId: 01KDSWPSRBPT3V7MDTA8TZYZTJ
                   answer: '4'
                   comment: Board is generally effective but can still improve.
-                - questionId: 01KC1X24JGVGB5VC3SB3BCDZKH
+                - questionId: 01KDSWPSRN1G7QKCW8SATVJHD2
                   answer: agree
                   comment: Strategic direction is mostly clear.
-                - questionId: 01KC1X24P67Y5Z4HDZCPTJ0WGH
+                - questionId: 01KDSWPSRQ3530WWW5MSP6SKJK
                   answer: No further comments at this time.
                   comment: null
               submit: false
-    parameters:
-      - name: COMPANY_ID
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{COMPANY_ID}}'
   /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/interviews:
     get:
       summary: List stakeholder interviews
@@ -3185,6 +3272,54 @@ paths:
         schema:
           type: string
         example: '{{interviewId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report/generate:
+    post:
+      summary: Generate report
+      responses: {}
+      tags:
+        - Evaluations Report
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
+  /api/orgs/{COMPANY_ID}/reports/{reportId}/preview:
+    get:
+      summary: preview report
+      parameters:
+        - name: includeNotes
+          in: query
+          schema:
+            type: boolean
+          example: 'true'
+      responses: {}
+      tags:
+        - Evaluations Report
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: reportId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{reportId}}'
 components:
   securitySchemes:
     BearerAuth:
