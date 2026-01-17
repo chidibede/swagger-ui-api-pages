@@ -1039,7 +1039,7 @@ paths:
                   type: string
                   format: uri
             example:
-              email: caracolasstore+9@gmail.com
+              email: caracolasstore+19@gmail.com
               role: evaluation_manager
               firstName: Gary
               lastName: Neville
@@ -2132,12 +2132,21 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/documents/backoffice/templates:
+  /api/orgs/documents/{COMPANY_ID}/templates:
     get:
       summary: list document templates
       responses: {}
       tags:
         - Evaluation Documents
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/evaluations/respondent/documents/requests:
     get:
       summary: List requested documents for respondents
@@ -2146,7 +2155,7 @@ paths:
           in: query
           schema:
             type: string
-          example: e65ce02fb1cd9daf2525bbb62a93934ab2c183c72d753d90604f5dea91a9a966
+          example: b38a25dd8064ad4ed54eeb9b2396e10263d325a253fe0f8f389c93889c6517b4
       responses: {}
       tags:
         - Evaluation Documents
@@ -2358,10 +2367,10 @@ paths:
                 comment:
                   type: string
             example:
-              deskReviewId: 01KEKTQ9J1BTYRJR8GQHZ5M1ZG
-              frameworkId: 01KE6PCKEFA440KGJAS4D4ZBRQ
-              sectionId: 01KE6PCKGCFSSF8Z6N72GAQ3ZT
-              questionId: 01KE6PCKC5AH125ANJT9A3TJN0
+              deskReviewId: 01KEWBTZJ0P2ZCB6667BE61B23
+              frameworkId: 01KE6PG5PVXNY873ZXTGXBQNKW
+              sectionId: 01KE6PG5PXTC9H9VEY7PZZVD4R
+              questionId: 01KE6PG5N289S2XK8D1Q351V39
               answer: 'yes'
               comment: >-
                 Interlocking directorships comply with approved limits within
@@ -3320,6 +3329,1173 @@ paths:
         schema:
           type: string
         example: '{{reportId}}'
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report:
+    put:
+      summary: Edit report
+      responses: {}
+      tags:
+        - Evaluations Report
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: object
+                  properties:
+                    meta:
+                      type: object
+                      properties:
+                        orgName:
+                          type: string
+                        evaluationTitle:
+                          type: string
+                        period:
+                          type: string
+                        primaryContact:
+                          type: string
+                        overallComplianceScore:
+                          type: number
+                    tableOfContents:
+                      type: object
+                      properties:
+                        items:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              number:
+                                type: integer
+                              title:
+                                type: string
+                              page:
+                                nullable: true
+                    sections:
+                      type: object
+                      properties:
+                        executiveSummary:
+                          type: object
+                          properties:
+                            overview:
+                              type: string
+                            keyFindings:
+                              type: array
+                              items:
+                                type: string
+                            summaryRecommendations:
+                              type: array
+                              items:
+                                type: string
+                            overallScoreComment:
+                              type: string
+                        introduction:
+                          type: object
+                          properties:
+                            context:
+                              type: string
+                            purpose:
+                              type: string
+                            scope:
+                              type: string
+                            objectives:
+                              type: array
+                              items:
+                                type: string
+                        methodology:
+                          type: object
+                          properties:
+                            overview:
+                              type: string
+                            steps:
+                              type: array
+                              items:
+                                type: string
+                            participantSummary:
+                              type: string
+                            methods:
+                              type: array
+                              items:
+                                type: string
+                            limitations:
+                              type: array
+                              items:
+                                type: string
+                        frameworkResults:
+                          type: object
+                          properties:
+                            frameworks:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  frameworkId:
+                                    type: string
+                                  name:
+                                    type: string
+                                  narrative:
+                                    type: string
+                                  sumScore:
+                                    type: string
+                                    format: utc-millisec
+                                  totalQuestions:
+                                    type: integer
+                                  compliancePercent:
+                                    type: string
+                                  overallScore:
+                                    type: number
+                                  keyStrengths:
+                                    type: array
+                                    items:
+                                      type: string
+                                  keyGaps:
+                                    type: array
+                                    items:
+                                      type: string
+                            resultsSummary:
+                              type: string
+                              format: style
+                            heatmapExplanation:
+                              type: string
+                        surveyInsights:
+                          type: object
+                          properties:
+                            overview:
+                              type: string
+                            keyThemes:
+                              type: array
+                              items: {}
+                            observations:
+                              type: string
+                            notableQuotes:
+                              type: array
+                              items: {}
+                        interviewInsights:
+                          type: object
+                          properties:
+                            overview:
+                              type: string
+                            themes:
+                              type: array
+                              items: {}
+                            observations:
+                              type: string
+                            boardDynamics:
+                              type: string
+                              format: style
+                        strengths:
+                          type: object
+                          properties:
+                            narrative:
+                              type: string
+                            aspects:
+                              type: array
+                              items:
+                                type: string
+                            items:
+                              type: array
+                              items:
+                                type: string
+                        areasForImprovement:
+                          type: object
+                          properties:
+                            narrative:
+                              type: string
+                            aspects:
+                              type: array
+                              items:
+                                type: string
+                            items:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  area:
+                                    type: string
+                                  issue:
+                                    type: string
+                                  recommendation:
+                                    type: string
+                                  expectedBenefit:
+                                    type: string
+                        focusAreasNextYear:
+                          type: object
+                          properties:
+                            narrative:
+                              type: string
+                            priorities:
+                              type: array
+                              items:
+                                type: string
+                            items:
+                              type: array
+                              items:
+                                type: string
+                        recommendationsRoadmap:
+                          type: object
+                          properties:
+                            narrative:
+                              type: string
+                            timeline:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  period:
+                                    type: string
+                                  actionItems:
+                                    type: array
+                                    items:
+                                      type: string
+                            responsibility:
+                              type: array
+                              items:
+                                type: string
+                            items:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  recommendation:
+                                    type: string
+                                  owner:
+                                    type: string
+                                  timeline:
+                                    type: string
+                                  priority:
+                                    type: string
+                        appendices:
+                          type: object
+                          properties:
+                            notes:
+                              type: string
+                            frameworkScores:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  frameworkId:
+                                    type: string
+                                  frameworkName:
+                                    type: string
+                                  sumScore:
+                                    type: string
+                                    format: utc-millisec
+                                  totalQuestions:
+                                    type: integer
+                                  compliancePercent:
+                                    type: string
+                            evidenceHighlights:
+                              type: array
+                              items: {}
+            example:
+              document:
+                meta:
+                  orgName: ABC Corporation
+                  evaluationTitle: Board Governance Evaluation 2025
+                  period: 31 December 2024 - 18 January 2025
+                  primaryContact: Dr. Jane Doe, Company Secretary
+                  overallComplianceScore: 79.5
+                tableOfContents:
+                  items:
+                    - number: 1
+                      title: Executive Summary
+                      page: null
+                    - number: 2
+                      title: Introduction
+                      page: null
+                    - number: 3
+                      title: Methodology
+                      page: null
+                    - number: 4
+                      title: Framework Results
+                      page: null
+                    - number: 5
+                      title: Survey Insights
+                      page: null
+                    - number: 6
+                      title: Interview Insights
+                      page: null
+                    - number: 7
+                      title: Strengths
+                      page: null
+                    - number: 8
+                      title: Areas for Improvement
+                      page: null
+                    - number: 9
+                      title: Focus Areas Next Year
+                      page: null
+                    - number: 10
+                      title: Recommendations Roadmap
+                      page: null
+                    - number: 11
+                      title: Appendices
+                      page: null
+                sections:
+                  executiveSummary:
+                    overview: >-
+                      This governance evaluation report presents an independent
+                      assessment of the board's effectiveness and compliance
+                      with leading governance practices. The evaluation was
+                      conducted over the period from 31 December 2024 to 18
+                      January 2025, covering critical governance dimensions
+                      including board structure, risk oversight, strategic
+                      direction, and accountability mechanisms. The assessment
+                      reveals a board that demonstrates strong foundational
+                      governance practices with an overall compliance score of
+                      79.5%, alongside identified opportunities for enhancement
+                      in documentation processes and succession planning.
+                    keyFindings:
+                      - >-
+                        The board achieved a compliance rate of 77.27% on core
+                        governance practices, indicating strong foundational
+                        alignment with governance standards.
+                      - >-
+                        The board structure generally aligns with leading
+                        practices, with clear separation of roles between the
+                        Chair and Chief Executive Officer.
+                      - >-
+                        Risk oversight mechanisms are in place, though there is
+                        room for formalization and more structured
+                        documentation.
+                      - >-
+                        Board engagement in the evaluation process was
+                        exemplary, with 100% participation from board members.
+                      - >-
+                        UPDATED: Succession planning processes have been
+                        strengthened following recent board member transitions,
+                        demonstrating adaptive governance.
+                    summaryRecommendations:
+                      - >-
+                        Enhance board documentation processes to ensure
+                        comprehensive record-keeping of board decisions and
+                        discussions.
+                      - >-
+                        Institute additional board training modules focusing on
+                        emerging governance trends and regulatory requirements.
+                      - >-
+                        UPDATED: Develop and implement a formalized director
+                        induction program to support new board members
+                        effectively.
+                      - >-
+                        Establish more structured risk reporting mechanisms to
+                        the board.
+                    overallScoreComment: >-
+                      The board demonstrates strong overall compliance with
+                      governance principles, with particular strength in board
+                      structure and engagement. The identified areas for
+                      improvement are manageable and present opportunities for
+                      enhanced governance maturity.
+                  introduction:
+                    context: >-
+                      This evaluation was conducted in a context of ongoing
+                      regulatory evolution in the Nigerian corporate governance
+                      landscape, with increased emphasis on board
+                      accountability, transparency, and risk management. The
+                      evaluation period coincided with significant
+                      organizational changes, including the appointment of new
+                      board members and the establishment of additional board
+                      committees to address emerging governance requirements.
+                    purpose: >-
+                      The purpose of this evaluation is to objectively assess
+                      the effectiveness of the board's governance practices,
+                      identify areas of strength, and highlight opportunities
+                      for improvement. The assessment provides the board with
+                      actionable insights to enhance its governance framework
+                      and ensure alignment with both regulatory requirements and
+                      leading practices.
+                    scope: >-
+                      The review covered board structure, governance policies,
+                      risk oversight, strategic direction, board composition and
+                      diversity, director independence, committee effectiveness,
+                      and board evaluation processes. The assessment was based
+                      on desk review of governance documents, framework-based
+                      questionnaire responses, and available evidence of
+                      governance practices.
+                    objectives:
+                      - >-
+                        Assess compliance with applicable governance frameworks
+                        and regulatory requirements.
+                      - >-
+                        Evaluate the effectiveness of board structure and
+                        committee arrangements.
+                      - >-
+                        Identify strengths and areas for improvement in
+                        governance practices.
+                      - >-
+                        Provide actionable recommendations for governance
+                        enhancement.
+                  methodology:
+                    overview: >-
+                      A blended approach was used involving structured framework
+                      assessments, desk review of governance documentation, and
+                      analysis of board practices. The evaluation employed
+                      multiple governance frameworks to ensure comprehensive
+                      coverage of governance dimensions. Framework-based
+                      questionnaires were distributed to board members and key
+                      executives, with responses collated and scored against
+                      established criteria.
+                    steps:
+                      - >-
+                        Review of responses to governance framework
+                        questionnaires distributed to all board members.
+                      - >-
+                        Collation and scoring against each applicable framework
+                        section, with particular attention to compliance
+                        indicators.
+                      - >-
+                        Evidence review and supplementary documentation
+                        assessment, including board charters, committee terms of
+                        reference, and governance policies.
+                      - >-
+                        Analysis of board composition, diversity metrics, and
+                        independence assessments.
+                      - >-
+                        Evaluation of board and committee meeting structures and
+                        decision-making processes.
+                      - >-
+                        UPDATED: Comparative analysis against industry best
+                        practices and peer governance benchmarks.
+                    participantSummary: >-
+                      All 12 board members participated in the evaluation
+                      process, representing 100% response rate. Additionally,
+                      the Company Secretary, Chief Risk Officer, and Head of
+                      Internal Audit provided supplementary information and
+                      documentation. The evaluation process was conducted
+                      confidentially to encourage candid responses.
+                    methods:
+                      - Desk Review
+                      - Framework-based Questionnaires
+                      - Document Analysis
+                      - Structured Interviews (limited)
+                    limitations:
+                      - >-
+                        Interview and survey insights were not available for
+                        this cycle, limiting qualitative perspectives on board
+                        dynamics.
+                      - >-
+                        No physical verification of board activities was
+                        undertaken during this evaluation.
+                      - >-
+                        UPDATED: Some historical governance documentation was
+                        not available for the full evaluation period, requiring
+                        reliance on current documentation and board member
+                        recollections.
+                  frameworkResults:
+                    frameworks:
+                      - frameworkId: 01KE6PCKEFA440KGJAS4D4ZBRQ
+                        name: Core Governance Framework
+                        narrative: >-
+                          The board met 17 of 22 key governance criteria under
+                          the Core Governance Framework, representing a
+                          compliance rate of 77.27%. Strong performance was
+                          observed in board structure, role clarity, and board
+                          composition. Areas requiring attention include
+                          documentation of board decisions, formalization of
+                          succession planning processes, and structured board
+                          evaluation mechanisms. The board demonstrates a solid
+                          foundation in governance principles, with identified
+                          gaps presenting opportunities for enhancement rather
+                          than fundamental weaknesses.
+                        sumScore: '17'
+                        totalQuestions: 22
+                        compliancePercent: '77.27'
+                        overallScore: 77.27
+                        keyStrengths:
+                          - Clear separation of Chair and CEO roles
+                          - Established board committee structure
+                          - Active board engagement in strategic matters
+                        keyGaps:
+                          - Formal documentation processes need enhancement
+                          - Succession planning requires more structure
+                          - Board evaluation mechanisms could be more systematic
+                      - frameworkId: 01KE6PG5PVXNY873ZXTGXBQNKW
+                        name: Risk & Audit Framework
+                        narrative: >-
+                          Strong performance was noted in risk management and
+                          audit oversight, with the board meeting 9 of 11
+                          applicable criteria (81.82% compliance). The board has
+                          established risk oversight mechanisms through the
+                          Audit and Risk Committee, with regular risk reporting
+                          and engagement with internal and external auditors.
+                          Risk registers are maintained, and risk appetite
+                          statements are reviewed periodically. The primary
+                          opportunity lies in more structured integration of
+                          risk considerations into strategic decision-making and
+                          enhanced documentation of risk oversight activities.
+                        sumScore: '9'
+                        totalQuestions: 11
+                        compliancePercent: '81.82'
+                        overallScore: 81.82
+                        keyStrengths:
+                          - Effective Audit and Risk Committee operations
+                          - Regular risk reporting to the board
+                          - Strong engagement with auditors
+                        keyGaps:
+                          - >-
+                            Risk integration into strategic planning could be
+                            enhanced
+                          - >-
+                            Documentation of risk oversight decisions needs
+                            improvement
+                      - frameworkId: 01KE6PH8QXYZ123456789ABCDEF
+                        name: Sustainability & ESG Framework
+                        narrative: >-
+                          UPDATED: The board has made significant progress in
+                          ESG governance, meeting 6 of 8 applicable criteria
+                          (75% compliance). Recent initiatives include the
+                          establishment of an ESG committee and the development
+                          of a sustainability strategy. However, formal ESG
+                          reporting and integration into board decision-making
+                          require further development to align with emerging
+                          regulatory expectations.
+                        sumScore: '6'
+                        totalQuestions: 8
+                        compliancePercent: '75.00'
+                        overallScore: 75
+                        keyStrengths:
+                          - Newly established ESG committee
+                          - Sustainability strategy development in progress
+                          - Board awareness of ESG considerations
+                        keyGaps:
+                          - Formal ESG reporting mechanisms not yet established
+                          - ESG integration into board agendas needs enhancement
+                    resultsSummary: >-
+                      Three key frameworks were used for the assessment: Core
+                      Governance, Risk & Audit, and Sustainability & ESG. The
+                      board demonstrated substantial compliance across all
+                      frameworks, with overall scores ranging from 75% to
+                      81.82%. The highest performance was observed in Risk &
+                      Audit (81.82%), followed by Core Governance (77.27%), and
+                      Sustainability & ESG (75%). These results indicate a
+                      governance framework that is well-established with clear
+                      opportunities for incremental enhancement.
+                    heatmapExplanation: >-
+                      The framework results demonstrate a balanced governance
+                      profile with particular strength in risk oversight. Core
+                      governance practices are solid, with identified
+                      opportunities primarily in documentation and formalization
+                      processes. The ESG dimension shows promising development
+                      but requires further maturation to align with best
+                      practices.
+                  surveyInsights:
+                    overview: >-
+                      No direct survey insights were gathered for this
+                      evaluation cycle. The evaluation relied primarily on desk
+                      review and framework-based questionnaires. It is
+                      recommended that future evaluations include a tailored
+                      board survey to capture qualitative perspectives on board
+                      effectiveness, director satisfaction, and areas of
+                      perceived strength and concern.
+                    keyThemes: []
+                    observations: >-
+                      It is recommended that future evaluations include a
+                      tailored board survey to provide additional qualitative
+                      insights into board dynamics, director perspectives on
+                      governance effectiveness, and areas for improvement.
+                      Survey data would complement the framework-based
+                      assessment and provide a more holistic view of board
+                      governance.
+                    notableQuotes: []
+                  interviewInsights:
+                    overview: >-
+                      No formal interviews were conducted as part of this
+                      evaluation. Limited structured discussions were held with
+                      the Company Secretary and Chief Risk Officer to clarify
+                      governance processes and obtain supplementary
+                      documentation. Engaging with board members through
+                      structured interviews would provide valuable qualitative
+                      insights into board dynamics, decision-making processes,
+                      and perceived governance challenges.
+                    themes: []
+                    observations: >-
+                      Engaging with board members through structured interviews
+                      would provide valuable qualitative insights into board
+                      dynamics, decision-making processes, and perceived
+                      governance challenges. Future evaluations should consider
+                      incorporating board member interviews as a standard
+                      component of the evaluation methodology.
+                    boardDynamics: >-
+                      UPDATED: Based on available documentation and interactions
+                      with key officers, the board appears to function
+                      cohesively with effective collaboration between board
+                      members. Board meetings are well-attended, and there is
+                      evidence of robust discussion and debate on key matters.
+                      The Chair facilitates productive board discussions, and
+                      directors actively contribute to strategic
+                      decision-making.
+                  strengths:
+                    narrative: >-
+                      The board has demonstrated several key strengths in its
+                      governance practices. These strengths form a solid
+                      foundation upon which the board can build to further
+                      enhance its governance maturity. The identified strengths
+                      reflect the board's commitment to effective governance and
+                      its proactive approach to governance enhancement.
+                    aspects:
+                      - >-
+                        Strong overall compliance with fundamental governance
+                        principles, with an overall compliance rate of 77.27% on
+                        core governance practices.
+                      - >-
+                        Full engagement in the evaluation process, evidenced by
+                        100% response rate from board members, demonstrating
+                        commitment to governance improvement.
+                      - >-
+                        Effective board and committee meeting cadence, with
+                        regular meetings and comprehensive agenda coverage.
+                      - >-
+                        Clear separation of Chair and CEO roles, ensuring
+                        appropriate checks and balances in leadership structure.
+                      - >-
+                        UPDATED: Robust risk oversight mechanisms through a
+                        well-functioning Audit and Risk Committee, with regular
+                        risk reporting and engagement with auditors.
+                      - >-
+                        UPDATED: Recent improvements in board composition with
+                        the appointment of independent directors, enhancing
+                        board diversity and independence.
+                      - >-
+                        Active board engagement in strategic matters, with
+                        evidence of meaningful board input into strategic
+                        decision-making processes.
+                    items:
+                      - >-
+                        Strong overall compliance with fundamental governance
+                        principles
+                      - >-
+                        Full engagement in the evaluation process (100% response
+                        rate)
+                      - Effective board and committee meeting cadence
+                      - Clear separation of Chair and CEO roles
+                      - Robust risk oversight mechanisms
+                      - Improved board composition with independent directors
+                      - Active board engagement in strategic matters
+                  areasForImprovement:
+                    narrative: >-
+                      Several areas present opportunities for improvement that,
+                      if addressed, would enhance the board's governance
+                      effectiveness and maturity. These areas are not
+                      fundamental weaknesses but rather opportunities for
+                      incremental enhancement. The identified improvements are
+                      manageable and align with the board's overall trajectory
+                      of governance development.
+                    aspects:
+                      - >-
+                        Enhance board documentation processes to ensure
+                        comprehensive record-keeping of board decisions,
+                        discussions, and rationale. This includes formalizing
+                        the documentation of board resolutions and ensuring that
+                        minutes adequately capture the substance of board
+                        discussions.
+                      - >-
+                        Strengthen documentation standards for board decisions,
+                        particularly around strategic decisions and risk-related
+                        matters. Enhanced documentation would improve
+                        auditability and provide better historical records of
+                        board decision-making.
+                      - >-
+                        Broaden ongoing training for board members, with a focus
+                        on emerging governance trends, regulatory developments,
+                        and industry-specific governance challenges. This should
+                        include both formal training sessions and informal
+                        knowledge-sharing opportunities.
+                      - >-
+                        UPDATED: Formalize and document succession planning
+                        processes, including criteria for director succession,
+                        identification of potential candidates, and timelines
+                        for succession planning activities. This builds on
+                        recent progress in this area.
+                      - >-
+                        UPDATED: Enhance ESG governance and reporting mechanisms
+                        to align with emerging regulatory expectations and
+                        stakeholder interests. This should include formal ESG
+                        reporting frameworks and integration of ESG
+                        considerations into board agendas.
+                      - >-
+                        Develop more structured board evaluation mechanisms,
+                        including regular self-assessments and external
+                        evaluations, to provide ongoing feedback on board
+                        effectiveness.
+                    items:
+                      - area: Documentation
+                        issue: >-
+                          Board documentation processes need enhancement to
+                          ensure comprehensive record-keeping of board decisions
+                          and discussions. Current documentation may not always
+                          capture the full substance of board deliberations.
+                        recommendation: >-
+                          Implement standardized documentation templates for
+                          board resolutions and enhance minute-taking practices
+                          to ensure comprehensive capture of board discussions
+                          and rationale. Establish documentation review
+                          processes to ensure quality and completeness.
+                        expectedBenefit: >-
+                          Improved auditability, better historical records,
+                          enhanced accountability, and more comprehensive
+                          documentation for regulatory and compliance purposes.
+                      - area: Succession Planning
+                        issue: >-
+                          UPDATED: Succession planning processes require further
+                          formalization and documentation. While progress has
+                          been made, the processes need to be more structured
+                          and documented to ensure consistency and
+                          effectiveness.
+                        recommendation: >-
+                          Develop a formalized succession planning framework
+                          that includes: (1) criteria for director succession,
+                          (2) identification and development of potential
+                          candidates, (3) timelines for succession activities,
+                          and (4) regular review and update of succession plans.
+                          Document these processes in governance policies.
+                        expectedBenefit: >-
+                          Ensured board continuity, better preparation for
+                          director transitions, improved board composition
+                          planning, and reduced disruption during board member
+                          changes.
+                      - area: Board Training
+                        issue: >-
+                          Ongoing training for board members could be broadened
+                          to cover emerging governance trends, regulatory
+                          developments, and industry-specific challenges.
+                          Training programs should be more structured and
+                          comprehensive.
+                        recommendation: >-
+                          Develop an annual board training calendar covering:
+                          (1) emerging governance trends and best practices, (2)
+                          regulatory developments and compliance requirements,
+                          (3) industry-specific governance challenges, and (4)
+                          director skills development. Include both external
+                          training opportunities and internal knowledge-sharing
+                          sessions.
+                        expectedBenefit: >-
+                          Enhanced director capabilities, better informed
+                          decision-making, improved governance practices, and
+                          alignment with evolving governance standards.
+                      - area: ESG Governance
+                        issue: >-
+                          UPDATED: ESG governance and reporting mechanisms need
+                          enhancement to align with emerging regulatory
+                          expectations. While an ESG committee has been
+                          established, formal reporting frameworks and
+                          integration into board decision-making require
+                          development.
+                        recommendation: >-
+                          Formalize ESG reporting frameworks, integrate ESG
+                          considerations into board agendas and decision-making
+                          processes, and develop metrics for tracking ESG
+                          performance. Establish clear responsibilities for ESG
+                          oversight within the board structure.
+                        expectedBenefit: >-
+                          Improved ESG performance, better stakeholder
+                          communication, enhanced risk management, and alignment
+                          with regulatory expectations.
+                  focusAreasNextYear:
+                    narrative: >-
+                      The following priorities should be addressed in the coming
+                      year to enhance the board's governance effectiveness.
+                      These focus areas align with the identified areas for
+                      improvement and represent manageable, high-impact
+                      initiatives that will contribute to governance maturity.
+                    priorities:
+                      - >-
+                        Conduct annual board and committee effectiveness reviews
+                        to provide ongoing feedback and identify areas for
+                        improvement. This should include both self-assessments
+                        and external evaluations where appropriate.
+                      - >-
+                        Formalise and document risk management protocols,
+                        including risk appetite statements, risk reporting
+                        mechanisms, and integration of risk considerations into
+                        strategic decision-making.
+                      - >-
+                        Implement periodic director training sessions covering
+                        emerging governance trends, regulatory developments, and
+                        director skills development. Training should be tailored
+                        to the board's specific needs and industry context.
+                      - >-
+                        UPDATED: Complete the formalization of succession
+                        planning processes, including documentation of criteria,
+                        candidate identification processes, and succession
+                        timelines.
+                      - >-
+                        UPDATED: Establish formal ESG reporting mechanisms and
+                        integrate ESG considerations into regular board agenda
+                        items and decision-making processes.
+                      - >-
+                        Enhance board documentation standards and processes to
+                        ensure comprehensive capture of board decisions,
+                        discussions, and rationale.
+                    items:
+                      - Conduct annual board and committee effectiveness reviews
+                      - Formalise and document risk management protocols
+                      - Implement periodic director training sessions
+                      - Complete formalization of succession planning processes
+                      - Establish formal ESG reporting mechanisms
+                      - Enhance board documentation standards and processes
+                  recommendationsRoadmap:
+                    narrative: >-
+                      A structured roadmap for implementing the recommendations
+                      outlined in this report is presented below. The roadmap
+                      organizes recommendations by timeline (short-term,
+                      medium-term, long-term) and priority (high, medium, low).
+                      This provides a clear path forward for governance
+                      enhancement and ensures that recommendations are
+                      implemented in a logical and manageable sequence.
+                    timeline:
+                      - period: Q1 2025
+                        actionItems:
+                          - >-
+                            Review and update board charters and key governance
+                            policies to reflect current governance practices and
+                            regulatory requirements.
+                          - >-
+                            Initiate board training on governance, risk, and
+                            compliance, focusing on emerging trends and
+                            regulatory developments.
+                          - >-
+                            UPDATED: Finalize succession planning framework
+                            documentation and obtain board approval for the
+                            formalized process.
+                          - >-
+                            Enhance board documentation templates and train
+                            board support staff on improved documentation
+                            practices.
+                      - period: Q2-Q3 2025
+                        actionItems:
+                          - >-
+                            Launch a comprehensive board survey to gather
+                            qualitative insights on board effectiveness and
+                            governance practices.
+                          - >-
+                            UPDATED: Implement formal ESG reporting mechanisms
+                            and integrate ESG considerations into board agendas.
+                          - >-
+                            Conduct first annual board and committee
+                            effectiveness review, including self-assessments and
+                            external evaluation where appropriate.
+                          - >-
+                            Develop and implement risk management protocol
+                            documentation, including risk appetite statements
+                            and risk reporting frameworks.
+                      - period: Q4 2025
+                        actionItems:
+                          - >-
+                            Review progress on all governance enhancement
+                            initiatives and adjust priorities as needed.
+                          - >-
+                            Conduct follow-up training sessions based on
+                            identified needs from the effectiveness review.
+                          - >-
+                            UPDATED: Complete ESG integration into strategic
+                            planning processes and establish ESG performance
+                            metrics.
+                    responsibility:
+                      - >-
+                        Board Chair and Company Secretary to coordinate
+                        documentation updates and governance policy reviews.
+                      - >-
+                        Nomination and Governance Committee to oversee training
+                        initiatives and succession planning formalization.
+                      - >-
+                        Audit and Risk Committee to lead risk management
+                        protocol development and implementation.
+                      - >-
+                        UPDATED: ESG Committee to drive ESG reporting mechanism
+                        establishment and integration into board processes.
+                      - >-
+                        Company Secretary to coordinate overall governance
+                        enhancement roadmap implementation and progress
+                        tracking.
+                    items:
+                      - recommendation: >-
+                          Review and update board charters and key governance
+                          policies
+                        owner: Board Chair and Company Secretary
+                        timeline: short
+                        priority: high
+                      - recommendation: >-
+                          Initiate board training on governance, risk, and
+                          compliance
+                        owner: Nomination and Governance Committee
+                        timeline: short
+                        priority: high
+                      - recommendation: >-
+                          UPDATED: Finalize succession planning framework
+                          documentation
+                        owner: Nomination and Governance Committee
+                        timeline: short
+                        priority: high
+                      - recommendation: Enhance board documentation templates and training
+                        owner: Company Secretary
+                        timeline: short
+                        priority: medium
+                      - recommendation: Launch comprehensive board survey
+                        owner: Board Chair
+                        timeline: medium
+                        priority: medium
+                      - recommendation: 'UPDATED: Implement formal ESG reporting mechanisms'
+                        owner: ESG Committee
+                        timeline: medium
+                        priority: high
+                      - recommendation: >-
+                          Conduct first annual board and committee effectiveness
+                          review
+                        owner: Board Chair
+                        timeline: medium
+                        priority: medium
+                      - recommendation: >-
+                          Develop and implement risk management protocol
+                          documentation
+                        owner: Audit and Risk Committee
+                        timeline: medium
+                        priority: high
+                      - recommendation: >-
+                          UPDATED: Complete ESG integration into strategic
+                          planning
+                        owner: ESG Committee and Board Chair
+                        timeline: long
+                        priority: medium
+                      - recommendation: >-
+                          Review progress on all governance enhancement
+                          initiatives
+                        owner: Board Chair and Company Secretary
+                        timeline: long
+                        priority: low
+                  appendices:
+                    notes: >-
+                      Additional supporting documentation, including detailed
+                      framework scores, evidence highlights, and supplementary
+                      governance materials, are available upon request. The
+                      board may request additional analysis or clarification on
+                      any aspect of this evaluation.
+                    frameworkScores:
+                      - frameworkId: 01KE6PCKEFA440KGJAS4D4ZBRQ
+                        frameworkName: Core Governance Framework
+                        sumScore: '17'
+                        totalQuestions: 22
+                        compliancePercent: '77.27'
+                      - frameworkId: 01KE6PG5PVXNY873ZXTGXBQNKW
+                        frameworkName: Risk & Audit Framework
+                        sumScore: '9'
+                        totalQuestions: 11
+                        compliancePercent: '81.82'
+                      - frameworkId: 01KE6PH8QXYZ123456789ABCDEF
+                        frameworkName: Sustainability & ESG Framework
+                        sumScore: '6'
+                        totalQuestions: 8
+                        compliancePercent: '75.00'
+                    evidenceHighlights: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
+  /api/me/profile:
+    get:
+      summary: get profile
+      responses: {}
+      tags:
+        - Profile
+      security:
+        - BearerAuth: []
+    patch:
+      summary: update profile
+      responses: {}
+      tags:
+        - Profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lastName:
+                  type: string
+                firstName:
+                  type: string
+            example:
+              lastName: Store
+              firstName: Caracolas
+  /api/me/password:
+    patch:
+      summary: change password
+      responses: {}
+      tags:
+        - Profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+                confirmNewPassword:
+                  type: string
+            example:
+              currentPassword: John@weq113
+              newPassword: John@weq112
+              confirmNewPassword: John@weq112
+  /api/me/notifications:
+    patch:
+      summary: update notification settings
+      responses: {}
+      tags:
+        - Profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                loginNotification:
+                  type: boolean
+                importantNotice:
+                  type: boolean
+                productUpdates:
+                  type: boolean
+                activitySummary:
+                  type: boolean
+            example:
+              loginNotification: false
+              importantNotice: false
+              productUpdates: true
+              activitySummary: false
+  /api/orgs/{COMPANY_ID}/dashboard:
+    get:
+      summary: get dashboard
+      responses: {}
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/announcements/auth:
+    get:
+      summary: Get auth announcements
+      responses: {}
+      tags:
+        - Announcements
+      security:
+        - BearerAuth: []
+  /api/orgs/announcements:
+    get:
+      summary: Admin list all announcements
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses: {}
+      tags:
+        - Announcements
+      security:
+        - BearerAuth: []
+    post:
+      summary: Create auth announcements
+      responses: {}
+      tags:
+        - Announcements
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                targetSurfaces:
+                  type: array
+                  items:
+                    type: string
+                channels:
+                  type: array
+                  items:
+                    type: string
+                endsAt:
+                  type: string
+                  format: date
+            example:
+              title: System Maintenance Scheduled
+              body: >-
+                Scheduled maintenance will occur this weekend. The system will
+                be unavailable on Saturday, 10 PM - 2 AM.
+              targetSurfaces:
+                - auth
+              channels:
+                - web
+              endsAt: '2026-01-19'
+  /api/orgs/{COMPANY_ID}/announcements:
+    get:
+      summary: Get application announcements evaluation page
+      parameters:
+        - name: surface
+          in: query
+          schema:
+            type: string
+          example: evaluations
+      responses: {}
+      tags:
+        - Announcements
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+  /api/orgs/announcements/{announcementId}/toggle:
+    patch:
+      summary: Toggle announcement
+      responses: {}
+      tags:
+        - Announcements
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: announcementId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{announcementId}}'
 components:
   securitySchemes:
     BearerAuth:
