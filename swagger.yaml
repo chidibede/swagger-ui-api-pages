@@ -1039,7 +1039,7 @@ paths:
                   type: string
                   format: uri
             example:
-              email: caracolasstore+19@gmail.com
+              email: chidimarshalbede@gmail.com
               role: evaluation_manager
               firstName: Gary
               lastName: Neville
@@ -1941,7 +1941,7 @@ paths:
                   items:
                     type: string
             example:
-              title: QA Evaluation
+              title: Q1A Evaluation
               description: Evaluation for QA
               startDate: '2025-12-31'
               endDate: '2026-01-18'
@@ -1974,6 +1974,54 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/update:
+    put:
+      summary: update evaluation
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                startDate:
+                  type: string
+                  format: date
+                endDate:
+                  type: string
+                  format: date
+                frameworkIds:
+                  type: array
+                  items:
+                    type: string
+            example:
+              title: QA1 Evaluation
+              description: Evaluation for QA
+              startDate: '2026-01-31'
+              endDate: '2026-02-18'
+              frameworkIds:
+                - 01KE6PCKEFA440KGJAS4D4ZBRQ
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
   /api/evaluations/{evaluationId}/dashboard:
     get:
       summary: evaluation dashboard
@@ -2028,6 +2076,27 @@ paths:
         - Evaluations
       security:
         - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/cancel:
+    post:
+      summary: cancel evaluation
+      responses: {}
+      tags:
+        - Evaluations
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
   /api/orgs/{evaluationId}/evaluations/documents:
     get:
       summary: List document requests for evaluation
@@ -2332,7 +2401,7 @@ paths:
                 evaluationId:
                   type: string
             example:
-              evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
+              evaluationId: 01KEWBTDTSGHWSDJ6XR5SYPJDM
     parameters:
       - name: COMPANY_ID
         in: path
