@@ -1969,6 +1969,11 @@ paths:
           deprecated: false
           schema: {}
           example: '10'
+        - name: timeFrame
+          in:  query
+          required: false
+          schema: {}
+          example: 'last-7-days | last-30-days | all-time'
       responses: {}
       tags:
         - Evaluations
