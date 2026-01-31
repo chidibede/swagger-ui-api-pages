@@ -3189,6 +3189,17 @@ paths:
                   answer: No further comments at this time.
                   comment: null
               submit: false
+  /api/orgs/{{COMPANY_ID}}/evaluations/surveys/{{surveyId}}/participants/{{participantId}}:
+    delete:
+      summary: Remove participant from survey
+      parameters:
+        - name: participantId
+          in: path params
+        - name: surveyId
+          in: path params
+      responses: {}
+      tags:
+        - Evaluation Surveys
   /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/interviews:
     get:
       summary: List stakeholder interviews
