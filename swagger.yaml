@@ -4535,6 +4535,8 @@ paths:
                 endsAt:
                   type: string
                   format: date
+                shouldSendEmail:
+                  type: boolean
             example:
               title: System Maintenance Scheduled
               body: >-
