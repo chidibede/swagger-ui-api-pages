@@ -2206,6 +2206,34 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
+  /api/orgs/{{COMPANY_ID}}/documents/re-request:
+    post:
+      summary: Re Request document
+      responses: {}
+      parameters:
+        name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      tags:
+        - Evaluation Documents
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestItemId:
+                  type: string
+                publicUrl:
+                  type: string
+                  format: uri
+                providerId:
+                  type: string
   /api/orgs/documents/{COMPANY_ID}/templates:
     get:
       summary: list document templates
