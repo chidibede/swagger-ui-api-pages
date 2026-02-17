@@ -162,10 +162,10 @@ paths:
                 lastName:
                   type: string
             example:
-              email: chidimarshalbede@gmail.com
+              email: chidimarshalbede+1@gmail.com
               password: John@weq112
               firstName: Chidi
-              lastName: Marshal
+              lastName: Bede
   /auth/signin:
     post:
       summary: signin
@@ -179,7 +179,8 @@ paths:
               type: object
             example: |-
               {
-                  "email": "caracolasstore@gmail.com",
+                  // "email": "caracolasstore@gmail.com",
+                  "email": "chidimarshalbede+1@gmail.com",
                   // "email": "caracolasstore+8@gmail.com",
                   // "password": "Password@weq112"
                   "password": "John@weq112"
@@ -339,8 +340,8 @@ paths:
                   type: string
             example:
               paymentStatus: succeeded
-              providerTxReference: 5oyj1wmc6v
-              paymentId: 01KDRC19CKQXW1403RSAVHSKQW
+              providerTxReference: 8pofdacy5c
+              paymentId: 01KFXJH7XNDDM8MZ1H0455X85M
   /api/payment/plans:
     get:
       summary: Fetch payment plans
@@ -371,9 +372,9 @@ paths:
                   type: string
                   format: uri
             example:
-              planId: 01KBNYMEG5PXRYGFEMBCNRP0QV
-              companyId: 01KAS36HYKRTFFPK1WRZYY9QH2
-              userId: 01K9DA2VPGX2353AXSTQ93C6QY
+              planId: 01KBNYME23408PZBGYZAAG93KC
+              companyId: 01KFXJFET7VZD5B1VQ3K89XB6Q
+              userId: 01KFXJEKTWSN6P3G74M2EENE5W
               provider: Paystack
               callbackUrl: https://app.dgoval.com/payments/callback
   /api/surveys/templates/01KA0ZJYTBD28PWHJ929ZFW06N/metadata:
@@ -959,28 +960,16 @@ paths:
           application/json:
             schema:
               type: object
-              properties:
-                logoUrl:
-                  type: string
-                  format: uri
-                name:
-                  type: string
-                category:
-                  type: string
-                industry:
-                  type: string
-                address:
-                  type: string
-                userId:
-                  type: string
-            example:
-              logoUrl: >-
-                https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg
-              name: Grace Tech
-              category: Public
-              industry: Trading
-              address: Abuja
-              userId: 01K9DA2VPGX2353AXSTQ93C6QY
+            example: |-
+              {
+                  "logoUrl": "https://res.cloudinary.com/marshalcloudinary/image/upload/v1762257735/dgoval/20221114_161754-ecd4b9b6-7216-452e.jpg",
+                  "name": "Gracie G Tech",
+                  "category": "Public",
+                  "industry": "Trading",
+                  "address": "Abuja",
+                  // "userId": "01K9DA2VPGX2353AXSTQ93C6QY"
+                  "userId": "01KFXJEKTWSN6P3G74M2EENE5W"
+              }
     get:
       summary: list companies for user
       responses: {}
@@ -1970,10 +1959,11 @@ paths:
           schema: {}
           example: '10'
         - name: timeFrame
-          in:  query
+          in: query
           required: false
+          deprecated: false
           schema: {}
-          example: 'last-7-days | last-30-days | all-time'
+          example: last-7-days
       responses: {}
       tags:
         - Evaluations
@@ -2063,7 +2053,7 @@ paths:
                 reason:
                   type: string
             example:
-              approvalId: 01KBJ7JYBSYKP7CHMGZXNGY95G
+              approvalId: 01KEAPT780MWRMKMS47TTD6F9D
               accept: true
               reason: Well done
     parameters:
@@ -2206,17 +2196,10 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/{{COMPANY_ID}}/documents/re-request:
+  /api/orgs/{COMPANY_ID}/documents/re-request:
     post:
-      summary: Re Request document
+      summary: Re Request rejected document
       responses: {}
-      parameters:
-        name: COMPANY_ID
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{COMPANY_ID}}'
       tags:
         - Evaluation Documents
       security:
@@ -2234,6 +2217,17 @@ paths:
                   format: uri
                 providerId:
                   type: string
+            example:
+              requestItemId: ''
+              publicUrl: https://app.dgoval.com
+              providerId: ''
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
   /api/orgs/documents/{COMPANY_ID}/templates:
     get:
       summary: list document templates
@@ -3017,27 +3011,6 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
-  /api/orgs/{companyId}/evaluations/{evaluationId}/surveys/{surveyId}/export:
-    get:
-      summary: export survey
-      responses: {}
-      tags:
-        - Export Evaluation Survey Response
-      security:
-        - BearerAuth: []
-      parameters:
-        - name: COMPANY_ID
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '{{COMPANY_ID}}'
-        - name: surveyId
-          in: path
-          required: true
-          schema:
-            type: string
-          example: '{{surveyId}}'
   /api/orgs/{COMPANY_ID}/evaluations/{surveyId}/surveys/view:
     get:
       summary: get evaluation survey
@@ -3238,17 +3211,33 @@ paths:
                   answer: No further comments at this time.
                   comment: null
               submit: false
-  /api/orgs/{{COMPANY_ID}}/evaluations/surveys/{{surveyId}}/participants/{{participantId}}:
+  /api/orgs/{COMPANY_ID}/evaluations/surveys/{surveyId}/participants/{participantId}:
     delete:
       summary: Remove participant from survey
-      parameters:
-        - name: participantId
-          in: path params
-        - name: surveyId
-          in: path params
       responses: {}
       tags:
         - Evaluation Surveys
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: surveyId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{surveyId}}'
+      - name: participantId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{participantId}}'
   /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/interviews:
     get:
       summary: List stakeholder interviews
@@ -3298,31 +3287,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties:
-                title:
-                  type: string
-                boardMemberId:
-                  type: string
-                scheduledDate:
-                  type: string
-                  format: date
-                scheduledTime:
-                  type: string
-                  format: time
-                type:
-                  type: string
-                channel:
-                  type: string
-                description:
-                  type: string
-            example:
-              title: Audit Chair Stakeholder Interview
-              boardMemberId: 01KBWATFMM5RCAQS74KE0BPSRW
-              scheduledDate: '2026-12-29'
-              scheduledTime: '11:00:00'
-              type: online
-              channel: Zoom
-              description: Initial stakeholder engagement interview with the audit chair.
+            example: "{\r\n    \"title\": \"Audit Chair Stakeholder Interview\",\r\n    \"boardMemberId\": \"01KBWATFMM5RCAQS74KE0BPSRW\",\r\n    //   \"scheduledDate\": \"2026-12-29\",\r\n    \"scheduledDate\": \"20-02-2026\",\r\n    \"scheduledTime\": \"11:00:00\",\r\n    \"type\": \"online\",\r\n    \"channel\": \"Zoom\",\r\n    \"description\": \"Initial stakeholder engagement interview with the audit chair.\"\r\n}"
   /api/orgs/{COMPANY_ID}/interviews/{interviewId}/view:
     get:
       summary: Get interview details
@@ -3363,11 +3328,14 @@ paths:
                 scheduledTime:
                   type: string
                   format: style
+                scheduledDate:
+                  type: string
                 description:
                   type: string
             example:
               title: Board Chair Stakeholder Interview
               scheduledTime: '15:00'
+              scheduledDate: 20-02-2026
               description: Initial stakeholder engagement interview with the board chair.
     parameters:
       - name: COMPANY_ID
@@ -3400,8 +3368,10 @@ paths:
                   type: string
             example:
               summary: >-
-                I had a call with Timo, Board chairman and the compliance score
-                matched what was expected
+                I had a call with Gad,  chairman and the compliance score
+                matched what was expected. They explained that every board
+                appointment followed the cbn corporate gorvenance. We also added
+                that family appointment was stringly frowned upon
     parameters:
       - name: COMPANY_ID
         in: path
@@ -3417,12 +3387,25 @@ paths:
         example: '{{interviewId}}'
   /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report/generate:
     post:
-      summary: Generate report
+      summary: Trigger generate report async
       responses: {}
       tags:
         - Evaluations Report
       security:
         - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                companyId:
+                  type: string
+                evaluationId:
+                  type: string
+            example:
+              companyId: 01K9DA5HM0406JZ1PP322VA1M8
+              evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
     parameters:
       - name: COMPANY_ID
         in: path
@@ -4435,6 +4418,34 @@ paths:
         schema:
           type: string
         example: '{{evaluationId}}'
+    get:
+      summary: Fetch generated report
+      responses: {}
+      tags:
+        - Evaluations Report
+      security:
+        - BearerAuth: []
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report/status:
+    get:
+      summary: Check report generating status
+      responses: {}
+      tags:
+        - Evaluations Report
+      security:
+        - BearerAuth: []
+    parameters:
+      - name: COMPANY_ID
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '{{evaluationId}}'
   /api/me/profile:
     get:
       summary: get profile
@@ -4584,8 +4595,6 @@ paths:
                 endsAt:
                   type: string
                   format: date
-                shouldSendEmail:
-                  type: boolean
             example:
               title: System Maintenance Scheduled
               body: >-
@@ -4595,7 +4604,7 @@ paths:
                 - auth
               channels:
                 - web
-              endsAt: '2026-01-19'
+              endsAt: '2026-02-19'
   /api/orgs/{COMPANY_ID}/announcements:
     get:
       summary: Get application announcements evaluation page
