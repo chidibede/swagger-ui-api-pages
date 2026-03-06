@@ -4544,7 +4544,7 @@ paths:
     post:
       summary: submit support request
       responses: {}
-       requestBody:
+      requestBody:
         content:
           application/json:
             schema:
