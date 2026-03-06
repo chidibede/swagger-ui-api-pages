@@ -4544,6 +4544,22 @@ paths:
     post:
       summary: submit support request
       responses: {}
+       requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                email:
+                  type: string
+                description:
+                  type: string
+            example:
+              title: Issue Assessing Evaluation
+              description: I am having issue assessing evaluation
+              email: 'caracolasstore@gmail.com'
       tags:
         - Support
       security:
