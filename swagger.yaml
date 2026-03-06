@@ -4540,6 +4540,14 @@ paths:
         schema:
           type: string
         example: '{{COMPANY_ID}}'
+  /api/support/submit:
+    post:
+      summary: submit support request
+      responses: {}
+      tags:
+        - Support
+      security:
+        - BearerAuth: []
   /api/announcements/auth:
     get:
       summary: Get auth announcements
