@@ -4556,10 +4556,20 @@ paths:
                   type: string
                 description:
                   type: string
+                attachments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      filename:
+                        type: string
+                      content:
+                        type: string
             example:
               title: Issue Assessing Evaluation
               description: I am having issue assessing evaluation
               email: 'caracolasstore@gmail.com'
+              attachments: [{"filename": "file.jpg", content: "base64 content"}]
       tags:
         - Support
       security:
