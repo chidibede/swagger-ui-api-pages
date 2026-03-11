@@ -4498,7 +4498,7 @@ paths:
         - Evaluations Report
       security:
         - BearerAuth: []
-  /api/orgs/{COMPANY_SOLOMON}/evaluations/{evaluationIdSolomon}/report/status:
+  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report/status:
     get:
       summary: Check report generating status
       responses: {}
@@ -4507,18 +4507,18 @@ paths:
       security:
         - BearerAuth: []
     parameters:
-      - name: COMPANY_SOLOMON
+      - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
-        example: '{{COMPANY_SOLOMON}}'
-      - name: evaluationIdSolomon
+        example: '{{COMPANY_ID}}'
+      - name: evaluationId
         in: path
         required: true
         schema:
           type: string
-        example: '{{evaluationIdSolomon}}'
+        example: '{{evaluationId}}'
   /api/me/profile:
     get:
       summary: get profile
@@ -4598,7 +4598,7 @@ paths:
               importantNotice: false
               productUpdates: true
               activitySummary: false
-  /api/orgs/{COMPANY_SOLOMON}/dashboard:
+  /api/orgs/{COMPANY_ID}/dashboard:
     get:
       summary: get dashboard
       responses: {}
@@ -4607,12 +4607,12 @@ paths:
       security:
         - BearerAuth: []
     parameters:
-      - name: COMPANY_SOLOMON
+      - name: COMPANY_ID
         in: path
         required: true
         schema:
           type: string
-        example: '{{COMPANY_SOLOMON}}'
+        example: '{{COMPANY_ID}}'
   /api/announcements/auth:
     get:
       summary: Get auth announcements
