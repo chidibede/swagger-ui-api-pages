@@ -179,8 +179,8 @@ paths:
               type: object
             example: |-
               {
-                  // "email": "caracolasstore@gmail.com",
-                  "email": "chidimarshalbede+1@gmail.com",
+                  "email": "caracolasstore@gmail.com",
+                  // "email": "chidimarshalbede+1@gmail.com",
                   // "email": "caracolasstore+8@gmail.com",
                   // "password": "Password@weq112"
                   "password": "John@weq112"
@@ -1440,7 +1440,7 @@ paths:
           in: query
           schema:
             type: integer
-          example: '3'
+          example: '10'
         - name: sort
           in: query
           schema:
@@ -1949,8 +1949,9 @@ paths:
       parameters:
         - name: page
           in: query
-          schema:
-            type: integer
+          required: false
+          deprecated: false
+          schema: {}
           example: '1'
         - name: limit
           in: query
@@ -2639,61 +2640,6 @@ paths:
               startDate: '2025-12-31T00:00:00.000Z'
               endDate: '2026-01-20T23:59:59.999Z'
               evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
-    parameters:
-      - name: COMPANY_ID
-        in: path
-        required: true
-        schema:
-          type: string
-        example: '{{COMPANY_ID}}'
-    post:
-      summary: Save Evaluation survey metadata peer review
-      responses: {}
-      tags:
-        - Evaluation Surveys
-      security:
-        - BearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                  format: style
-                description:
-                  type: string
-                startDate:
-                  type: string
-                  format: date-time
-                endDate:
-                  type: string
-                  format: date-time
-                evaluationId:
-                  type: string
-                surveyType:
-                  type: string
-                candidates:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      email:
-                        type: string
-            example:
-              title: 'Board Evaluation: 2025 Annual End'
-              description: Annual performance evaluation for board members
-              startDate: '2025-12-31T00:00:00.000Z'
-              endDate: '2026-01-20T23:59:59.999Z'
-              evaluationId: 01KEKTA7TM97CDHT39XGA2GKM6
-              surveyType: "peerReview"
-              candidates: [        {
-                "id": "01KBQKG9TR7DYHJ67XY0TH8DYV",
-                "email": "caracolasstore+10@gmail.com"
-        }]
     parameters:
       - name: COMPANY_ID
         in: path
@@ -3548,6 +3494,21 @@ paths:
                     sections:
                       type: object
                       properties:
+                        recommendationsRoadmapCustom:
+                          type: object
+                          properties:
+                            overview:
+                              type: string
+                            keyFindings:
+                              type: array
+                              items:
+                                type: string
+                            summaryRecommendations:
+                              type: array
+                              items:
+                                type: string
+                            overallScoreComment:
+                              type: string
                         executiveSummary:
                           type: object
                           properties:
@@ -3803,9 +3764,66 @@ paths:
                       title: Recommendations Roadmap
                       page: null
                     - number: 11
+                      title: Recommendations Roadmap Custom
+                      page: null
+                    - number: 12
                       title: Appendices
                       page: null
                 sections:
+                  recommendationsRoadmapCustom:
+                    overview: >-
+                      This governance evaluation report presents an independent
+                      assessment of the board's effectiveness and compliance
+                      with leading governance practices. The evaluation was
+                      conducted over the period from 31 December 2024 to 18
+                      January 2025, covering critical governance dimensions
+                      including board structure, risk oversight, strategic
+                      direction, and accountability mechanisms. The assessment
+                      reveals a board that demonstrates strong foundational
+                      governance practices with an overall compliance score of
+                      79.5%, alongside identified opportunities for enhancement
+                      in documentation processes and succession planning.
+                    keyFindings:
+                      - >-
+                        The board achieved a compliance rate of 77.27% on core
+                        governance practices, indicating strong foundational
+                        alignment with governance standards.
+                      - >-
+                        The board structure generally aligns with leading
+                        practices, with clear separation of roles between the
+                        Chair and Chief Executive Officer.
+                      - >-
+                        Risk oversight mechanisms are in place, though there is
+                        room for formalization and more structured
+                        documentation.
+                      - >-
+                        Board engagement in the evaluation process was
+                        exemplary, with 100% participation from board members.
+                      - >-
+                        UPDATED: Succession planning processes have been
+                        strengthened following recent board member transitions,
+                        demonstrating adaptive governance.
+                    summaryRecommendations:
+                      - >-
+                        Enhance board documentation processes to ensure
+                        comprehensive record-keeping of board decisions and
+                        discussions.
+                      - >-
+                        Institute additional board training modules focusing on
+                        emerging governance trends and regulatory requirements.
+                      - >-
+                        UPDATED: Develop and implement a formalized director
+                        induction program to support new board members
+                        effectively.
+                      - >-
+                        Establish more structured risk reporting mechanisms to
+                        the board.
+                    overallScoreComment: >-
+                      The board demonstrates strong overall compliance with
+                      governance principles, with particular strength in board
+                      structure and engagement. The identified areas for
+                      improvement are manageable and present opportunities for
+                      enhanced governance maturity.
                   executiveSummary:
                     overview: >-
                       This governance evaluation report presents an independent
@@ -4480,7 +4498,7 @@ paths:
         - Evaluations Report
       security:
         - BearerAuth: []
-  /api/orgs/{COMPANY_ID}/evaluations/{evaluationId}/report/status:
+  /api/orgs/{COMPANY_SOLOMON}/evaluations/{evaluationIdSolomon}/report/status:
     get:
       summary: Check report generating status
       responses: {}
@@ -4489,18 +4507,18 @@ paths:
       security:
         - BearerAuth: []
     parameters:
-      - name: COMPANY_ID
+      - name: COMPANY_SOLOMON
         in: path
         required: true
         schema:
           type: string
-        example: '{{COMPANY_ID}}'
-      - name: evaluationId
+        example: '{{COMPANY_SOLOMON}}'
+      - name: evaluationIdSolomon
         in: path
         required: true
         schema:
           type: string
-        example: '{{evaluationId}}'
+        example: '{{evaluationIdSolomon}}'
   /api/me/profile:
     get:
       summary: get profile
@@ -4580,7 +4598,7 @@ paths:
               importantNotice: false
               productUpdates: true
               activitySummary: false
-  /api/orgs/{COMPANY_ID}/dashboard:
+  /api/orgs/{COMPANY_SOLOMON}/dashboard:
     get:
       summary: get dashboard
       responses: {}
@@ -4589,46 +4607,12 @@ paths:
       security:
         - BearerAuth: []
     parameters:
-      - name: COMPANY_ID
+      - name: COMPANY_SOLOMON
         in: path
         required: true
         schema:
           type: string
-        example: '{{COMPANY_ID}}'
-  /api/support/submit:
-    post:
-      summary: submit support request
-      responses: {}
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                email:
-                  type: string
-                description:
-                  type: string
-                attachments:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      filename:
-                        type: string
-                      content:
-                        type: string
-            example:
-              title: Issue Assessing Evaluation
-              description: I am having issue assessing evaluation
-              email: 'caracolasstore@gmail.com'
-              attachments: [{"filename": "file.jpg", content: "base64 content"}]
-      tags:
-        - Support
-      security:
-        - BearerAuth: []
+        example: '{{COMPANY_SOLOMON}}'
   /api/announcements/auth:
     get:
       summary: Get auth announcements
@@ -4730,6 +4714,31 @@ paths:
         schema:
           type: string
         example: '{{announcementId}}'
+  /api/support/submit:
+    post:
+      summary: support without attachment
+      responses: {}
+      tags:
+        - Support
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                title:
+                  type: string
+                description:
+                  type: string
+            example:
+              email: caracolasstore@gmail.com
+              title: Issue with app 3
+              description: Testing the support api
 components:
   securitySchemes:
     BearerAuth:
